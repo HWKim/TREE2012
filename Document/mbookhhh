@@ -1,3 +1,6 @@
+//http://java-school.net/jsp/moneybook.php
+
+
 create table moneybook (
    no  number,
    item    varchar2(100) NOT NULL,
