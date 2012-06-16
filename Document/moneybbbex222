@@ -8,221 +8,137 @@ class Dataframe extends JFrame implements ActionListener
 {
  Frame f;
 
-  String years[] = {"2007","2008","2009","2010","2011","2012","2013","2014","2015"};
-   String months[] = {"1","2","3","4","5","6","7","8","9","10","11","12"};
-    
-     JComboBox m;
-      JComboBox y;
-       JButton search;
+ String years[] = {"2007","2008","2009","2010","2011","2012","2013","2014","2015"};
+ String months[] = {"1","2","3","4","5","6","7","8","9","10","11","12"};
+ 
+ JComboBox m;
+ JComboBox y;
+ JButton search;
 
-        public Dataframe(Frame f)
-	 {
-	  this.f = f;
-	   }
+ public Dataframe(Frame f)
+ {
+ this.f = f;
+ }
 
-	    public void Run() 
-	     {
-	       JPanel p1 = new JPanel();
-	         y = new JComboBox(years);
-		   m = new JComboBox(months);
-		     search = new JButton("¸ñ·ÏÃ£±â");
+ public void Run() 
+ {
+  JPanel p1 = new JPanel();
+  y = new JComboBox(years);
+  m = new JComboBox(months);
+  search = new JButton("ëª©ë¡ì°¾ê¸°");
 
-		       search.addActionListener(this);
-		         //¹öÆ°ÀÌº¥Æ®
-			   
-			     p1.add(new JLabel("³âµµ : "));p1.add(y);p1.add(new JLabel("¿ù : "));p1.add(m);p1.add(search);
+  search.addActionListener(this);
+  //ë²„íŠ¼ì´ë²¤íŠ¸
+  
+  p1.add(new JLabel("ë…„ë„ : "));p1.add(y);p1.add(new JLabel("ì›” : "));p1.add(m);p1.add(search);
 
-			       add(p1,BorderLayout.CENTER);
-			         setLocation(400,100);  
-				   setSize(400,100);
-				     setVisible(true);
-				       setTitle("¿ù°£ ³»¿ªº¸±â");
-				        }
-					 public void actionPerformed(ActionEvent e)
-					  {
-					   Loaddata ld = new Loaddata(this,years[y.getSelectedIndex()],months[m.getSelectedIndex()]);
-					    ld.loadDatas();
-					     }
-					     }
+  add(p1,BorderLayout.CENTER);
+  setLocation(400,100);  
+  setSize(400,100);
+  setVisible(true);
+  setTitle("ì›”ê°„ ë‚´ì—­ë³´ê¸°");
+ }
+ public void actionPerformed(ActionEvent e)
+ {
+ Loaddata ld = new Loaddata(this,years[y.getSelectedIndex()],months[m.getSelectedIndex()]);
+ ld.loadDatas();
+ }
+}
 
-					      
+ 
 
-					      class Loaddata extends JFrame  implements ActionListener 
-					      {
-					      Frame f;
-					      String year;
-					      String month;
-					      String title[] = {"µî·Ï¹øÈ£","³â","¿ù","ÀÏ","ÁöÃâ³»¿ë","ÁöÃâ±İ¾×","¸Ş¸ğ"};
-					      JTable table;
-					      JScrollPane sp;
-					      Dialog dialog;
-					      Button close;
-					      Panel dialogP1;
-					      Panel dialogP2;
-					      Panel dialogP3;
+class Loaddata extends JFrame  implements ActionListener 
+{
+Frame f;
+String year;
+String month;
+String title[] = {"ë“±ë¡ë²ˆí˜¸","ë…„","ì›”","ì¼","ì§€ì¶œë‚´ìš©","ì§€ì¶œê¸ˆì•¡","ë©”ëª¨"};
+JTable table;
+JScrollPane sp;
+Dialog dialog;
+Button close;
+Panel dialogP1;
+Panel dialogP2;
+Panel dialogP3;
 
-					       public Loaddata(Frame f,String year,String month)
-					        {
-						 this.f = f;
-						  this.year = year;
-						   this.month = month;
-						    }
+ public Loaddata(Frame f,String year,String month)
+ {
+ this.f = f;
+ this.year = year;
+ this.month = month;
+ }
 
-						     public void loadDatas()
-						      {
-						       dialog = new Dialog(f);
-						        close = new Button("close");
-							 dialogP1 = new Panel();  // Panel 3°³ »ı¼º "¼±ÅÃ °á°ú"°¡ ¹èÄ¡
-							  dialogP2 = new Panel();  //     TextArea°¡ ¹èÄ¡
-							   dialogP3 = new Panel();  //     close ¹öÆ°ÀÌ ¹èÄ¡
+ public void loadDatas()
+ {
+ dialog = new Dialog(f);
+ close = new Button("close");
+ dialogP1 = new Panel();  // Panel 3ê°œ ìƒì„± "ì„ íƒ ê²°ê³¼"ê°€ ë°°ì¹˜
+ dialogP2 = new Panel();  //     TextAreaê°€ ë°°ì¹˜
+ dialogP3 = new Panel();  //     close ë²„íŠ¼ì´ ë°°ì¹˜
 
-							    TextArea textArea = new TextArea(50,50); // TextArea 10Àº ÁÙ 38Àº ³Êºñ
-							     textArea.setEditable(false);    // TextArea ¼öÁ¤ ºÒ°¡(Read Only)
-							       
-							        try
+ TextArea textArea = new TextArea(50,50); // TextArea 10ì€ ì¤„ 38ì€ ë„ˆë¹„
+ textArea.setEditable(false);    // TextArea ìˆ˜ì • ë¶ˆê°€(Read Only)
+  
+ try
 
-								 {
-								  Class.forName("com.mysql.jdbc.Driver");
+ {
+ Class.forName("com.mysql.jdbc.Driver");
 
-								   }catch(ClassNotFoundException e){System.out.println("JDBC driver loading error:");}
+ }catch(ClassNotFoundException e){System.out.println("JDBC driver loading error:");}
 
-								     try{
-								        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/cashdiary?user=root&password=dytc1234");
+  try{
+   Connection con = DriverManager.getConnection("jdbc:mysql://localhost/cashdiary?user=root&password=dytc1234");
 
-									   Statement st=con.createStatement();
-									      
-									         String strSql = "select * from cashdiary WHERE  year ='"+year+"' AND month = '"+month+"';";
+   Statement st=con.createStatement();
+   
+   String strSql = "select * from cashdiary WHERE  year ='"+year+"' AND month = '"+month+"';";
 
-										    JOptionPane.showMessageDialog(null, strSql);
+   JOptionPane.showMessageDialog(null, strSql);
 
-										       ResultSet result=st.executeQuery(strSql); //st.executeQuery SQL Ã¢¿¡ ÀÔ·ÂÇÏ´Â ¸í·É¾î¸¦ Àû¾î³ÖÀ»¼öÀÖ´Ù. 
-										          ResultSetMetaData rmdata = result.getMetaData();
-											     int cols = rmdata.getColumnCount();
+   ResultSet result=st.executeQuery(strSql); //st.executeQuery SQL ì°½ì— ì…ë ¥í•˜ëŠ” ëª…ë ¹ì–´ë¥¼ ì ì–´ë„£ì„ìˆ˜ìˆë‹¤. 
+   ResultSetMetaData rmdata = result.getMetaData();
+   int cols = rmdata.getColumnCount();
 
-											        while(result.next())
-												   {
-												      textArea.append("\nµî·Ï¹øÈ£ : " + result.getString(1));
-												         textArea.append("\n³¯      Â¥ : " + result.getString(2)+"³â"+result.getString(3)+"¿ù"+result.getString(4)+"ÀÏ");
-													    textArea.append("\nÁöÃâ³»¿ë : " + result.getString(5));
-													       textArea.append("\nÁöÃâ±İ¾× : " + result.getString(6));
-													          textArea.append("\n¸Ş      ¸ğ : " + result.getString(7));
-														     textArea.append("\n----------------------------------");
-														        textArea.append("\n                                                   ");
-															   }
-
-
-															      st.close();
-															         con.close();
-
-																    }catch(SQLException e){System.out.println("SQLException: "+e.getMessage());}
-
-																     
-																       close.addActionListener(this);// ´ÙÀÌ¾ó·Î±× ´İ±â
-
-																         dialog.setLocation(400,200);  // ´ÙÀÌ¾ó·Î±× À§Ä¡´Â ÇÁ·Î±×·¥ÀÇ(Frame)°ú µ¿ÀÏÇÑ À§Ä¡¿¡¼­ ½ÃÀÛ
-																	   dialog.setSize(400,600);     // ´ÙÀÌ¾ó·Î±× »çÀÌÁî
-
-																	     dialog.setTitle(year+"³â"+month+"¿ù ÁöÃâ³»¿ª");    // ´ÙÀÌ¾ó·Î±× Á¦¸ñ
-																	       dialog.setLayout(new BorderLayout());  // ´ÙÀÌ¾ó·Î±× Layout
-																	         
-																		   dialogP1.add(new Label("¼±ÅÃ »çÇ×"));  // Panel1¿¡ ¼±ÅÃ»çÇ×ÀÌ¶ó´Â ·¹ÀÌºí ¹èÄ¡
-																		     dialogP2.add(textArea);      // Panel2¿¡ textArea ¹èÄ¡
-																		       dialogP3.add(close);      // Panel3¿¡ close¹öÆ° ¹èÄ¡
-
-																		         dialog.add(dialogP1,BorderLayout.NORTH); // Panel1À» ´ÙÀÌ¾ó·Î±×ÀÇ »ó´Ü¿¡ ¹èÄ¡
-																			   dialog.add(dialogP2,BorderLayout.CENTER); // Panel2¸¦ ´ÙÀÌ¾ó·Î±×ÀÇ °¡¿îµ¥¿¡ ¹èÄ¡
-																			     dialog.add(dialogP3,BorderLayout.SOUTH); // Panel3À» ´ÙÀÌ¾ó·Î±×ÀÇ ÇÏ´Ü¿¡ ¹èÄ¡
-
-																			       dialog.show();        // ´ÙÀÌ¾ó·Î±× º¸¿©Áà!!
-																			         
-																				   }
-																				      public void actionPerformed (ActionEvent  e) 
-																				       {
-																				         dialog.hide();  // dialog¸¦ Á¾·á ÇØÁØ´Ù.
-																					  }
-																					  }
-																					  ===================================================================================================================
-																					  import java.awt.*;
-																					  import javax.swing.*;
-																					  import java.awt.event.*;
-																					  import java.sql.*;
-																					  import java.util.*;
-
-																					  class Delectframe extends JFrame implements ActionListener
-																					  {
-																					   Frame f;
-																					    JTextField codeField;
-																					     String strSql;
-																					      JButton del;
-																					       
-																					        public Delectframe(Frame f)
-																						 {
-																						  this.f = f;
-																						   }
-
-																						    public void Run() 
-																						     {
-																						       JPanel p1 = new JPanel();
-																						         del = new JButton("·¹ÄÚµå»èÁ¦");
-																							   codeField = new JTextField(8);
-
-																							     del.addActionListener(this);
-																							       
-																							         //¹öÆ°ÀÌº¥Æ®
-																								   
-																								     p1.add(new JLabel("»èÁ¦ÇÒµî·ÏÄÚµåÀÔ·Â : "));p1.add(codeField);p1.add(del);
-																								       
-																								         add(p1,BorderLayout.CENTER);
-																									   setLocation(400,100);   
-																									     setSize(400,100);
-																									       setVisible(true);
-																									         setTitle("·¹ÄÚµå »èÁ¦");
-																										  }
-
-																										   public void actionPerformed(ActionEvent e)
-																										    {
-																										      strSql = "Delete from cashdiary WHERE number ="+codeField.getText()+";";
-																										        Delectdata dd = new Delectdata(this,strSql);
-																											  dd.delDatas();
-																											   }
-																											   }
+   while(result.next())
+   {
+   textArea.append("\në“±ë¡ë²ˆí˜¸ : " + result.getString(1));
+   textArea.append("\në‚       ì§œ : " + result.getString(2)+"ë…„"+result.getString(3)+"ì›”"+result.getString(4)+"ì¼");
+   textArea.append("\nì§€ì¶œë‚´ìš© : " + result.getString(5));
+   textArea.append("\nì§€ì¶œê¸ˆì•¡ : " + result.getString(6));
+   textArea.append("\në©”      ëª¨ : " + result.getString(7));
+   textArea.append("\n----------------------------------");
+   textArea.append("\n                                                   ");
+   }
 
 
-																											   class Delectdata extends JFrame
-																											   {
-																											   Frame f;
-																											   String strSql;
+   st.close();
+   con.close();
 
-																											    public Delectdata(Frame f,String strSql)
-																											     {
-																											      this.f = f;
-																											       this.strSql = strSql;
-																											        }
+   }catch(SQLException e){System.out.println("SQLException: "+e.getMessage());}
 
-																												 public void delDatas()
-																												  {
-																												   try
+ 
+  close.addActionListener(this);// ë‹¤ì´ì–¼ë¡œê·¸ ë‹«ê¸°
 
-																												    {
-																												     Class.forName("com.mysql.jdbc.Driver");
+  dialog.setLocation(400,200);  // ë‹¤ì´ì–¼ë¡œê·¸ ìœ„ì¹˜ëŠ” í”„ë¡œê·¸ë¨ì˜(Frame)ê³¼ ë™ì¼í•œ ìœ„ì¹˜ì—ì„œ ì‹œì‘
+  dialog.setSize(400,600);     // ë‹¤ì´ì–¼ë¡œê·¸ ì‚¬ì´ì¦ˆ
 
-																												      }catch(ClassNotFoundException e){System.out.println("JDBC driver loading error:");}
+  dialog.setTitle(year+"ë…„"+month+"ì›” ì§€ì¶œë‚´ì—­");    // ë‹¤ì´ì–¼ë¡œê·¸ ì œëª©
+  dialog.setLayout(new BorderLayout());  // ë‹¤ì´ì–¼ë¡œê·¸ Layout
+  
+  dialogP1.add(new Label("ì„ íƒ ì‚¬í•­"));  // Panel1ì— ì„ íƒì‚¬í•­ì´ë¼ëŠ” ë ˆì´ë¸” ë°°ì¹˜
+  dialogP2.add(textArea);      // Panel2ì— textArea ë°°ì¹˜
+  dialogP3.add(close);      // Panel3ì— closeë²„íŠ¼ ë°°ì¹˜
 
-																												        try{
-																													   Connection con = DriverManager.getConnection("jdbc:mysql://localhost/cashdiary?user=root&password=dytc1234");
+  dialog.add(dialogP1,BorderLayout.NORTH); // Panel1ì„ ë‹¤ì´ì–¼ë¡œê·¸ì˜ ìƒë‹¨ì— ë°°ì¹˜
+  dialog.add(dialogP2,BorderLayout.CENTER); // Panel2ë¥¼ ë‹¤ì´ì–¼ë¡œê·¸ì˜ ê°€ìš´ë°ì— ë°°ì¹˜
+  dialog.add(dialogP3,BorderLayout.SOUTH); // Panel3ì„ ë‹¤ì´ì–¼ë¡œê·¸ì˜ í•˜ë‹¨ì— ë°°ì¹˜
 
-																													      Statement st=con.createStatement();
-																													         
-																														    JOptionPane.showMessageDialog(null, strSql);
-
-																														       st.executeUpdate(strSql);
-																														         
-																															    st.close();
-																															       con.close();
-
-																															          }catch(SQLException e){System.out.println("SQLException: "+e.getMessage());}
-																																        
-																																	 }
-																																	 }
-																																	 ÃâÃ³:[Project] °¡°èºÎ ÇÁ·Î±×·¥
+  dialog.show();        // ë‹¤ì´ì–¼ë¡œê·¸ ë³´ì—¬ì¤˜!!
+  
+  }
+   public void actionPerformed (ActionEvent  e) 
+ {
+  dialog.hide();  // dialogë¥¼ ì¢…ë£Œ í•´ì¤€ë‹¤.
+ }
+}
 
