@@ -3,5 +3,6 @@ void main()
 {
   printf("This is coding test\n");
   pritnf("This is coding plus test +++\n");
+  printf("oh...oh my god!!!!!!  it's very interesting!!!!!! wow wow wow \n");
 }
 
