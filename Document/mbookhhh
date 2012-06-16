@@ -1,4 +1,4 @@
-//http://java-school.net/jsp/moneybook.php  
+//출처 http://java-school.net/jsp/moneybook.php  
 
 
 create table moneybook (
@@ -332,6 +332,43 @@ for(int i=0;i < size;i++) {
 	<input type="text" name="endDate" size="10" />, 검색어
 	<input type="text" name="searchWord" size="12" />
 	<input type="submit" value="검색" />
+</form>
+</body>
+</html>
+
+
+// ===========================================   write_form.jsp   ====================================================
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%
+	Calendar cal = Calendar.getInstance();
+	int year = cal.get(Calendar.YEAR);
+	Integer month = cal.get(Calendar.MONTH) + 1;
+	String monthStr = month.toString();
+	if (monthStr.length() < 2) {
+		monthStr = "0" + monthStr;
+	}
+	int day = cal.get(Calendar.DAY_OF_MONTH);
+	
+	String payDate = year + "/" + monthStr + "/" + day;
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>사용내역 추가</title>
+</head>
+<body>
+<h1>가계부 | 사용내역 추가</h1>
+
+<form action="write.jsp" method="post">
+날짜 : <input type="text" name="pdate" value="<%=payDate %>" />(2012/01/01 형식으로 입력)<br />
+사용내역 : <input type="text" name="item" /><br />
+금액 : <input type="text" name="price" /><br />
+<input type="submit" value="확인" />
+<input type="button" value="취소" onclick="location.href='list.jsp'" />
 </form>
 </body>
 </html>
