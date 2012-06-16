@@ -1,4 +1,4 @@
-//http://java-school.net/jsp/moneybook.php
+//http://java-school.net/jsp/moneybook.php  
 
 
 create table moneybook (
@@ -51,4 +51,189 @@ public class Moneybook {
 		this.pdate = pdate;
 	}
 	
+}
+
+// ==========================================   Moneybook.java   =====================================================
+
+package net.java_school.moneybook;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class MoneybookDAO {
+	
+	private static final String URL = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
+	private static final String USER = "scott";
+	private static final String PASSWORD = "tiger";
+	
+	public MoneybookDAO() {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Connection getConnection() throws SQLException {
+		Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+		return con;
+	}
+
+	public ArrayList<Moneybook> getMoneybookList(String startDate,String endDate, String searchWord) {
+		ArrayList<Moneybook> books = new ArrayList<Moneybook>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT no,item,price,to_char(pdate,'YYYY/MM/DD') pdate " +
+				"FROM moneybook WHERE pdate between to_date(?,'YYYY/MM/DD') AND to_date(?,'YYYY/MM/DD') ";
+		if (searchWord != null && !searchWord.equals("")) {
+			sql = sql + " AND item like ? "; 
+		}
+		sql = sql + " ORDER BY pdate DESC,no DESC";
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, startDate);
+			pstmt.setString(2, endDate);
+			if (searchWord != null && !searchWord.equals("")) {
+				searchWord = "%" + searchWord + "%";
+				pstmt.setString(3, searchWord);
+			}
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Moneybook moneybook = new Moneybook();
+				moneybook.setNo(rs.getInt("no"));
+				moneybook.setItem(rs.getString("item"));
+				moneybook.setPrice(rs.getInt("price"));
+				moneybook.setPdate(rs.getString("pdate"));
+				books.add(moneybook);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(rs, pstmt, con);
+			System.out.println(sql);
+		}
+		return books;
+	}
+
+	public Moneybook getMoneybook(int no) {
+		Moneybook moneybook = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT no,item,price,to_char(pdate,'YYYY/MM/DD') pdate FROM moneybook WHERE no = ?";
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				moneybook = new Moneybook();
+				moneybook.setNo(rs.getInt("no"));
+				moneybook.setItem(rs.getString("item"));
+				moneybook.setPrice(rs.getInt("price"));
+				moneybook.setPdate(rs.getString("pdate"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(rs, pstmt, con);
+		}
+		
+		return moneybook;
+	
+	}
+	
+	public void insert(Moneybook moneybook) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		//순서 item,price,pdate
+		String sql = "INSERT INTO moneybook VALUES (seq_moneybook_no.nextval, ?, ?, to_date(?, 'YYYY/MM/DD') )";
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, moneybook.getItem());
+			pstmt.setInt(2, moneybook.getPrice());
+			pstmt.setString(3, moneybook.getPdate());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(null, pstmt, con);
+		}
+	}
+
+	public void update(Moneybook book) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE moneybook SET item = ?, price = ?, pdate = to_date(?, 'YYYY/MM/DD')  WHERE no = ?";
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, book.getItem());
+			pstmt.setInt(2, book.getPrice());
+			pstmt.setString(3, book.getPdate());
+			pstmt.setInt(4, book.getNo());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(null, pstmt, con);
+		}
+	}
+	
+	public void delete(int no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "DELETE FROM moneybook WHERE no = ?";
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(null, pstmt, con);
+		}
+	}
+	
+	public void close(ResultSet rs, PreparedStatement pstmt, Connection con) {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (pstmt != null) {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (con != null) {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }
