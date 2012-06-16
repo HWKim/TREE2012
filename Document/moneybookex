@@ -1,4 +1,4 @@
-import java.awt.*;
+mport java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -7,244 +7,243 @@ import java.text.*;
 
 public class Buyframe extends JFrame implements ActionListener
 {
- String select[] = {"½Ä  ºñ","±³  Åë","Åë  ½Å","¼î  ÇÎ","¹®  È­","ÀÇ  ·á","¼¼  ±İ","±â  Å¸"};
-  JComboBox buySelect;
-   JLabel buyLabel1;
-    JLabel buyLabel2;
-     JLabel buyLabel3;
-      JLabel todayy;
-       JLabel todaym;
-        JLabel todayd;
-	 JTextField buyTextField;
-	  JTextField buyMemo;
-	   JButton save;
-	    JButton cancel;
-	     String nowdate;
-	      Todays t;
-	       JMenuItem menuItem1;
-	        JMenuItem menuItem2;
-		 JMenuItem alldel;
-		  String strSql;
-		   public Buyframe()
-		    {
-		      super("ÀÚ¹Ù °¡°èºÎ ÇÁ·Î±×·¥");
-		        setSize(300,250);
-			  setLayout(new GridLayout(6,1));
-			   
-			     //Æû ±âº»¼³Á¤
-			       JPanel p0 = new JPanel();
-			         JPanel p1 = new JPanel();
-				   JPanel p2 = new JPanel();
-				     JPanel p3 = new JPanel();
-				       JPanel p4 = new JPanel();
-				         //ÆĞ³Î¼³Á¤
+ String select[] = {"ì‹  ë¹„","êµ  í†µ","í†µ  ì‹ ","ì‡¼  í•‘","ë¬¸  í™”","ì˜  ë£Œ","ì„¸  ê¸ˆ","ê¸°  íƒ€"};
+ JComboBox buySelect;
+ JLabel buyLabel1;
+ JLabel buyLabel2;
+ JLabel buyLabel3;
+ JLabel todayy;
+ JLabel todaym;
+ JLabel todayd;
+ JTextField buyTextField;
+ JTextField buyMemo;
+ JButton save;
+ JButton cancel;
+ String nowdate;
+ Todays t;
+ JMenuItem menuItem1;
+ JMenuItem menuItem2;
+ JMenuItem alldel;
+ String strSql;
+ public Buyframe()
+ {
+  super("ìë°” ê°€ê³„ë¶€ í”„ë¡œê·¸ë¨");
+  setSize(300,250);
+  setLayout(new GridLayout(6,1));
+ 
+  //í¼ ê¸°ë³¸ì„¤ì •
+  JPanel p0 = new JPanel();
+  JPanel p1 = new JPanel();
+  JPanel p2 = new JPanel();
+  JPanel p3 = new JPanel();
+  JPanel p4 = new JPanel();
+  //íŒ¨ë„ì„¤ì •
 
-					   t = new Todays();
-					     
-					       //³¯Â¥ Å¬·¡½º ¼±¾ğ
+  t = new Todays();
+  
+  //ë‚ ì§œ í´ë˜ìŠ¤ ì„ ì–¸
 
-					         JMenuBar menuBar = new JMenuBar();
-						   JMenu datas = new JMenu("³»¿ªº¸±â");
-						     JMenu deld = new JMenu("·¹ÄÚµå»èÁ¦");
-						       menuItem1 = new JMenuItem("¿ù°£³»¿ª");
-						         menuItem2 = new JMenuItem("ÄÚµå°Ë»ö»èÁ¦");
-							   alldel = new JMenuItem("¸ğµç·¹ÄÚµå»èÁ¦");
-							     datas.add(menuItem1);
-							       deld.add(menuItem2);
-							         deld.add(alldel);
-								   menuBar.add(datas);menuBar.add(deld);
-								     add(menuBar);
+  JMenuBar menuBar = new JMenuBar();
+  JMenu datas = new JMenu("ë‚´ì—­ë³´ê¸°");
+  JMenu deld = new JMenu("ë ˆì½”ë“œì‚­ì œ");
+  menuItem1 = new JMenuItem("ì›”ê°„ë‚´ì—­");
+  menuItem2 = new JMenuItem("ì½”ë“œê²€ìƒ‰ì‚­ì œ");
+  alldel = new JMenuItem("ëª¨ë“ ë ˆì½”ë“œì‚­ì œ");
+  datas.add(menuItem1);
+  deld.add(menuItem2);
+  deld.add(alldel);
+  menuBar.add(datas);menuBar.add(deld);
+  add(menuBar);
 
-								       //¸Ş´º¹Ù ¼³Á¤
+  //ë©”ë‰´ë°” ì„¤ì •
 
-								         todayy = new JLabel("8");
-									   todayy.setText("³¯ Â¥ : "+t.gety());
-									     todaym = new JLabel("8");
-									       todaym.setText(" "+t.getm());
-									         todayd = new JLabel("8");
-										   todayd.setText(" "+t.getd());
-										     
-										       buyLabel1 = new JLabel("ÁöÃâ³»¿ë :");
-										         buySelect = new JComboBox(select); 
-											   buyLabel2 = new JLabel("    ±İ  ¾× :");
-											     buyTextField = new JTextField(8);
-											       buyLabel3 = new JLabel("¸Ş        ¸ğ :");
-											            buyMemo =  new JTextField(19);
-												      save = new JButton("ÀÔ  ·Â");
-												        cancel = new JButton("Áö¿ì±â");
-													  //¶óÀÌºê·¯¸®
-													    menuItem2.addActionListener(this);
-													      menuItem1.addActionListener(this);
-													        alldel.addActionListener(this);
-														  save.addActionListener(this);
-														    cancel.addActionListener(this);
-														      //¹öÆ°ÀÌº¥Æ®
-														        p0.add(new JLabel(""));
-															  p1.add(todayy);
-															    p1.add(todaym);
-															      p1.add(todayd);
-															        p2.add(buyLabel1);
-																  p2.add(buySelect); 
-																    p2.add(buyLabel2);
-																      p2.add(buyTextField);  
-																        p3.add(buyLabel3);
-																	  p3.add(buyMemo);
-																	    p4.add(save);
-																	      p4.add(cancel);
-																	        //ÆĞ³Î¿¡ ¶óÀÌºê·¯¸® ¹èÄ¡
+  todayy = new JLabel("8");
+  todayy.setText("ë‚  ì§œ : "+t.gety());
+  todaym = new JLabel("8");
+  todaym.setText(" "+t.getm());
+  todayd = new JLabel("8");
+  todayd.setText(" "+t.getd());
+  
+  buyLabel1 = new JLabel("ì§€ì¶œë‚´ìš© :");
+  buySelect = new JComboBox(select); 
+  buyLabel2 = new JLabel("    ê¸ˆ  ì•¡ :");
+  buyTextField = new JTextField(8);
+  buyLabel3 = new JLabel("ë©”        ëª¨ :");
+     buyMemo =  new JTextField(19);
+  save = new JButton("ì…  ë ¥");
+  cancel = new JButton("ì§€ìš°ê¸°");
+  //ë¼ì´ë¸ŒëŸ¬ë¦¬
+  menuItem2.addActionListener(this);
+  menuItem1.addActionListener(this);
+  alldel.addActionListener(this);
+  save.addActionListener(this);
+  cancel.addActionListener(this);
+  //ë²„íŠ¼ì´ë²¤íŠ¸
+  p0.add(new JLabel(""));
+  p1.add(todayy);
+  p1.add(todaym);
+  p1.add(todayd);
+  p2.add(buyLabel1);
+  p2.add(buySelect); 
+  p2.add(buyLabel2);
+  p2.add(buyTextField);  
+  p3.add(buyLabel3);
+  p3.add(buyMemo);
+  p4.add(save);
+  p4.add(cancel);
+  //íŒ¨ë„ì— ë¼ì´ë¸ŒëŸ¬ë¦¬ ë°°ì¹˜
 
-																		  add(p0);add(p1);add(p2);add(p3);add(p4);
-																		    //ÇÁ·¹ÀÓ¿¡ ÆĞ³Î ¹èÄ¡
-																		      setLocation(100,100);
-																		        setVisible(true);
-																			 }
+  add(p0);add(p1);add(p2);add(p3);add(p4);
+  //í”„ë ˆì„ì— íŒ¨ë„ ë°°ì¹˜
+  setLocation(100,100);
+  setVisible(true);
+ }
 
-																			  public void actionPerformed(ActionEvent e)
-																			   {
-																			     if (e.getSource()==menuItem1)
-																			       {
-																			          JOptionPane.showMessageDialog(null, "¿ù°£³»¿ªº¸±â");
-																				     Dataframe df = new Dataframe(this);
-																				        df.Run();
-																					  }
-																					    else if (e.getSource()==menuItem2)
-																					      {
-																					         JOptionPane.showMessageDialog(null, "·¹ÄÚµå»èÁ¦");
-																						    Delectframe delf = new Delectframe(this);
-																						       delf.Run();
-																						         }
-																							   else if (e.getSource()==cancel)//ÀÌº¥Æ®°¡ ¹ß»ıÇÑ ÄÄÆ÷³ÍÆ®°¡ cancelÀÌ¸é ½ÇÇà
-																							     {
-																							        buyTextField.setText("");
-																								   buyMemo.setText("");
-																								     }
-																								        else if(e.getSource()==alldel)
-																									  {
-																									     strSql = "Delete from cashdiary;";
-																									        Delectdata dd = new Delectdata(this,strSql);
-																										   dd.delDatas();
-																										     
-																										       }
-																										         else if(e.getSource()==save)//ÀÌº¥Æ®°¡ ¹ß»ıÇÑ ÄÄÆ÷³ÍÆ®°¡ saveÀÌ¸é ½ÇÇà
-																											   {
-																											      boolean number = false; //¼ıÀÚ¸¸ ÀÏ¶§ ÆÇº° bool
-																											         boolean character = false; //¹®ÀÚ¸¸ ÀÏ¶§ ÆÇº° bool
+ public void actionPerformed(ActionEvent e)
+ {
+  if (e.getSource()==menuItem1)
+  {
+   JOptionPane.showMessageDialog(null, "ì›”ê°„ë‚´ì—­ë³´ê¸°");
+   Dataframe df = new Dataframe(this);
+   df.Run();
+  }
+  else if (e.getSource()==menuItem2)
+  {
+   JOptionPane.showMessageDialog(null, "ë ˆì½”ë“œì‚­ì œ");
+   Delectframe delf = new Delectframe(this);
+   delf.Run();
+  }
+  else if (e.getSource()==cancel)//ì´ë²¤íŠ¸ê°€ ë°œìƒí•œ ì»´í¬ë„ŒíŠ¸ê°€ cancelì´ë©´ ì‹¤í–‰
+  {
+   buyTextField.setText("");
+   buyMemo.setText("");
+  }
+   else if(e.getSource()==alldel)
+  {
+   strSql = "Delete from cashdiary;";
+   Delectdata dd = new Delectdata(this,strSql);
+   dd.delDatas();
+  
+  }
+  else if(e.getSource()==save)//ì´ë²¤íŠ¸ê°€ ë°œìƒí•œ ì»´í¬ë„ŒíŠ¸ê°€ saveì´ë©´ ì‹¤í–‰
+  {
+   boolean number = false; //ìˆ«ìë§Œ ì¼ë•Œ íŒë³„ bool
+   boolean character = false; //ë¬¸ìë§Œ ì¼ë•Œ íŒë³„ bool
 
-																												    String src = buyTextField.getText();
+   String src = buyTextField.getText();
 
-																												       for(int i=0 ; i< src.length() ; i++){ //ÀÔ·Â¹ŞÀº °ªÀ» ÇÑ±ÛÀÚ¾¿ °Ë»ö
+   for(int i=0 ; i< src.length() ; i++){ //ì…ë ¥ë°›ì€ ê°’ì„ í•œê¸€ìì”© ê²€ìƒ‰
 
-																												          char result = src.substring(i,i+1).charAt(0);
+   char result = src.substring(i,i+1).charAt(0);
 
-																													     if((int)result<48 || (int)result>57){ //¸¸¾à ¼ıÀÚ¿ÜÀÇ ¹®ÀÚ¶ó¸é...
-																													        character = true;
+   if((int)result<48 || (int)result>57){ //ë§Œì•½ ìˆ«ìì™¸ì˜ ë¬¸ìë¼ë©´...
+   character = true;
 
-																														   }else{ //¸¸¾à ¼ıÀÚ¶ó¸é...
-																														      number = true;
-																														         }
-																															    }
-																															       if(character == true && number == true){
-																															          JOptionPane.showMessageDialog(null, "¹®ÀÚ¿Í ¼ıÀÚ°¡ È¥¿ëµÇ¾îÀÖ½À´Ï´Ù ¼ıÀÚ¸¸ÀÔ·ÂÇÏ¼¼¿ä");
-																																     }else if(character == true && number == false){
-																																        JOptionPane.showMessageDialog(null, "¹®ÀÚ¿­ÀÔ´Ï´Ù ¼ıÀÚ¸¸ ÀÔ·ÂÇÏ¼¼¿ä");
-																																	   }else if(character == false && number == true){
-																																	      
-																																	         int c = Integer.parseInt(buyTextField.getText());
+   }else{ //ë§Œì•½ ìˆ«ìë¼ë©´...
+   number = true;
+   }
+   }
+   if(character == true && number == true){
+   JOptionPane.showMessageDialog(null, "ë¬¸ìì™€ ìˆ«ìê°€ í˜¼ìš©ë˜ì–´ìˆìŠµë‹ˆë‹¤ ìˆ«ìë§Œì…ë ¥í•˜ì„¸ìš”");
+   }else if(character == true && number == false){
+   JOptionPane.showMessageDialog(null, "ë¬¸ìì—´ì…ë‹ˆë‹¤ ìˆ«ìë§Œ ì…ë ¥í•˜ì„¸ìš”");
+   }else if(character == false && number == true){
+   
+   int c = Integer.parseInt(buyTextField.getText());
 
-																																		    Save s = new Save(this,t.gety(),t.getm(),t.getd(),select[buySelect.getSelectedIndex()],c,buyMemo.getText());
-																																		       s.saveData();
-
-
-																																		          }
-																																			    }
-																																			      
-																																			       }
-
-																																			        public static void main(String[] args) 
-																																				 {
-																																				   Buyframe bf = new Buyframe();
-																																				     bf.setDefaultCloseOperation(EXIT_ON_CLOSE); //X´­¸£¸é Á¾·á
-																																				      }
-																																				      }
-
-																																				      class Save
-																																				      {
-																																				      Frame f;
-																																				      String year;
-																																				      String month;
-																																				      String week;
-																																				      String item;
-																																				      int cost;
-																																				      String memo;
-																																				       public Save(Frame f,String year,String month,String week,String item,int cost,String memo)
-																																				        {
-																																					 this.f = f;
-																																					  this.year = year;
-																																					   this.month = month;
-																																					    this.week = week;
-																																					     this.item = item;
-																																					      this.cost = cost;
-																																					       this.memo = memo;
-																																					        }
-
-																																						 public void saveData()
-																																						  {
-																																						   try
-
-																																						    {
-																																						     Class.forName("com.mysql.jdbc.Driver");
-
-																																						      }catch(ClassNotFoundException e){System.out.println("JDBC driver loading error:");}
-
-																																						        try{
-																																							   Connection con = DriverManager.getConnection("jdbc:mysql://localhost/cashdiary?user=root&password=dytc1234");
-
-																																							      Statement st=con.createStatement();
-																																							         
-																																								    String strSql = "insert into cashdiary (year,month,week,item,cost,memo) values('"+year+"','"+month+"','"+week+"','"+item+"',"+cost+",'"+memo+"');";
-
-																																								       JOptionPane.showMessageDialog(null, strSql);
-
-																																								          st.executeUpdate(strSql);
-																																									     
-																																									        st.close();
-																																										   con.close();
-																																										      }catch(SQLException e){System.out.println("SQLException: "+e.getMessage());}
-																																										        }
-																																											}
+   Save s = new Save(this,t.gety(),t.getm(),t.getd(),select[buySelect.getSelectedIndex()],c,buyMemo.getText());
+   s.saveData();
 
 
-																																											class Todays 
-																																											{
-																																											 Calendar cal;
-																																											  SimpleDateFormat sdfy;
-																																											   SimpleDateFormat sdfm;
-																																											    SimpleDateFormat sdfd;
-																																											      public Todays()
-																																											       {
+   }
+  }
+  
+ }
 
-																																											         cal = Calendar.getInstance();
-																																												   sdfy = new SimpleDateFormat();
-																																												     sdfm = new SimpleDateFormat();
-																																												       sdfd = new SimpleDateFormat();
+ public static void main(String[] args) 
+ {
+  Buyframe bf = new Buyframe();
+  bf.setDefaultCloseOperation(EXIT_ON_CLOSE); //XëˆŒë¥´ë©´ ì¢…ë£Œ
+ }
+}
 
-																																												         sdfy.applyPattern("yyyy");
-																																													   sdfm.applyPattern("MM");
-																																													     sdfd.applyPattern("dd");
-																																													      }
+class Save
+{
+Frame f;
+String year;
+String month;
+String week;
+String item;
+int cost;
+String memo;
+ public Save(Frame f,String year,String month,String week,String item,int cost,String memo)
+ {
+ this.f = f;
+ this.year = year;
+ this.month = month;
+ this.week = week;
+ this.item = item;
+ this.cost = cost;
+ this.memo = memo;
+ }
 
-																																													       public String gety(){
-																																													         String yyyy = sdfy.format(cal.getTime());
-																																														   return yyyy;
-																																														    }
-																																														     public String getm(){
-																																														       String mm = sdfm.format(cal.getTime());
-																																														         return  mm;
-																																															  }
-																																															   public String getd(){
-																																															     String dd = sdfd.format(cal.getTime());
-																																															       return dd;
-																																															        }
-																																																}
-																																																ÃâÃ³:[Project] °¡°èºÎ ÇÁ·Î±×·¥
+ public void saveData()
+ {
+ try
 
+ {
+ Class.forName("com.mysql.jdbc.Driver");
+
+ }catch(ClassNotFoundException e){System.out.println("JDBC driver loading error:");}
+
+  try{
+   Connection con = DriverManager.getConnection("jdbc:mysql://localhost/cashdiary?user=root&password=dytc1234");
+
+   Statement st=con.createStatement();
+   
+   String strSql = "insert into cashdiary (year,month,week,item,cost,memo) values('"+year+"','"+month+"','"+week+"','"+item+"',"+cost+",'"+memo+"');";
+
+   JOptionPane.showMessageDialog(null, strSql);
+
+   st.executeUpdate(strSql);
+   
+   st.close();
+   con.close();
+   }catch(SQLException e){System.out.println("SQLException: "+e.getMessage());}
+  }
+}
+
+
+class Todays 
+{
+ Calendar cal;
+ SimpleDateFormat sdfy;
+ SimpleDateFormat sdfm;
+ SimpleDateFormat sdfd;
+  public Todays()
+ {
+
+  cal = Calendar.getInstance();
+  sdfy = new SimpleDateFormat();
+  sdfm = new SimpleDateFormat();
+  sdfd = new SimpleDateFormat();
+
+  sdfy.applyPattern("yyyy");
+  sdfm.applyPattern("MM");
+  sdfd.applyPattern("dd");
+ }
+
+ public String gety(){
+  String yyyy = sdfy.format(cal.getTime());
+  return yyyy;
+ }
+ public String getm(){
+  String mm = sdfm.format(cal.getTime());
+  return  mm;
+ }
+ public String getd(){
+  String dd = sdfd.format(cal.getTime());
+  return dd;
+ }
+}
+ì¶œì²˜:[Project] ê°€ê³„ë¶€ í”„ë¡œê·¸ë¨
