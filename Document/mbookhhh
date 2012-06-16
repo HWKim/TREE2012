@@ -1,0 +1,14 @@
+create table moneybook (
+   no  number,
+   item    varchar2(100) NOT NULL,
+   price   number,
+   pdate   date,
+   constraint PK_MONEYBOOK_NO primary key(no)
+)
+/
+create sequence SEQ_MONEYBOOK_NO
+start with 1
+increment by 1
+nocache
+nocycle
+/
