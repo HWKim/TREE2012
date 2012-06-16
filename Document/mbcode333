@@ -57,12 +57,12 @@ public class quiz2_2 {
                 식비지출비중 = Integer.parseInt(in.readLine());
                 System.out.println("교육비지출비중: " + 교육비/총지출액);
                 교통비지출비중  = Integer.parseInt(in.readLine());
-                
-                                                                 
-                                                            
-                          
-                 break;
+            case 4:
+                System.exit(0);
+                                
+                break;
                        }
            }
     }
+
    }
