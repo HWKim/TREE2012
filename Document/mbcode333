@@ -1,0 +1,72 @@
+package javabook.ch05;
+import java.io.*;
+public class quiz2_2 {
+ 
+  public static void main(String[] args)throws IOException {
+      BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
+          int 수입내역입력 = 0, 지출내역입력 = 0, 정산정보출력 = 0, 종료 = 0, 금액 = 0, 교통비 = 0, 식비 = 0, 교육비 = 0, 총수입액 = 0,총지출액 = 0, 총잔액 = 0;  
+	      int 교육비지출비중 = 0, 교통비지출비중 = 0, 식비지출비중 = 0;
+	          char p = 'Y';
+		      char Y = 'Y';
+		          char N = 'N';
+			   int a = 0;
+			    
+			                       while(p != 'n'){
+					                             System.out.println("가계부 v 0.4");
+								                           System.out.println("1.수입내역입력, 2. 지출내역입력, 3. 정산정보출력, 4. 종료");
+											                System.out.println("메뉴를 선택하세요.[1,2,3,4]");
+													             a = Integer.parseInt(in.readLine());
+														                                   
+																		                
+																				                             
+																							                                
+																											            
+																												               switch(a)
+																													                  {
+																															           
+																																               case 1:
+																																	                   System.out.println("수입내역입력을 선택하셨습니다.");
+																																			               System.out.println("수입항목내역과 금액을 입력하세요 : " );
+																																				                   금액 = Integer.parseInt(in.readLine());
+																																						               System.out.printf("메인 메뉴로 돌아가시겠습니까?%c\r\n", Y,N);
+																																							                   Y = (char)System.in.read();
+																																									               N = (char)System.in.read();
+																																										                   break;
+																																												               case 2:
+																																													                       System.out.println("지출내역입력을 선택하셨습니다.");
+																																															                       System.out.println("교통비 총액을 입력하세요 : " + 교통비);
+																																																	                       교통비 = Integer.parseInt(in.readLine());
+																																																			                       System.out.println("식비 총액을 입력하세요 : " + 식비);
+																																																					                          식비= Integer.parseInt(in.readLine());
+																																																								                  System.out.println("교육비 총액을 입력하세요 : " + 교육비);
+																																																										                     교육비 = Integer.parseInt(in.readLine());
+																																																												                        System.out.printf("메인 메뉴로 돌아가시겠습니까?%c\r\n", Y,N);
+																																																															             Y = (char)System.in.read();
+																																																																                  N = (char)System.in.read();
+																																																																		                 break;
+																																																																				             case 3:
+																																																																					                     System.out.println("총 수입액 : " + 금액);
+																																																																							                     총수입액 = Integer.parseInt(in.readLine());
+																																																																									                     System.out.println("총지출액: " + 총지출액);
+																																																																											                     총지출액 = Integer.parseInt(in.readLine());
+																																																																													                     System.out.println("총잔액 : " + 총잔액); 
+																																																																															                     총잔액 = Integer.parseInt(in.readLine());
+																																																																																	                     System.out.println("교육비지출비중 : " + 교통비/총지출액);
+																																																																																			                     교육비지출비중 = Integer.parseInt(in.readLine());
+																																																																																					                     System.out.println("식비지출비중 : " + 식비/총지출액);
+																																																																																							                     식비지출비중 = Integer.parseInt(in.readLine());
+																																																																																									                     System.out.println("교육비지출비중: " + 교육비/총지출액);
+																																																																																											                     교통비지출비중  = Integer.parseInt(in.readLine());
+																																																																																													                     
+																																																																																															                                                                      
+																																																																																																							                                                                  
+																																																																																																															                            
+																																																																																																																		                     break;
+																																																																																																																				                            }
+																																																																																																																							          
+																																																																																																																								             }
+																																																																																																																									                
+																																																																																																																											                 
+																																																																																																																													           
+																																																																																																																														       }
+																																																																																																																														          }
