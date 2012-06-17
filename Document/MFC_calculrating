@@ -305,3 +305,135 @@ void Ccalculrating::OnClear()
 	m_SU=0;
 	UpdateData(FALSE);	
 }
+
+
+void Ccalculrating::OnEffect() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(K==1){
+	m_SU3[1] = m_SU;
+	m_SU=m_SU3[0]+m_SU3[1];
+	}
+	else if(K==2){
+	m_SU3[1] = m_SU;
+	m_SU=m_SU3[0]-m_SU3[1];
+	}
+	else if(K==3){
+	m_SU3[1] = m_SU;
+	m_SU=m_SU3[0]*m_SU3[1];
+	}
+	else if(K==4){
+	m_SU3[1] = m_SU;
+	m_SU=m_SU3[0]/m_SU3[1];
+	}
+
+	i=1;
+	UpdateData(FALSE);
+}
+
+void Ccalculrating::OnSum() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	
+	m_SU3[0] = m_SU;
+	K=1;
+	m_SU = 0;
+
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnSub() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+
+	m_SU3[0] = m_SU;
+	K=2;
+	m_SU = 0;
+	
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnMulti() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+
+	m_SU3[0] = m_SU;
+	K=3;
+	m_SU = 0;
+	
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnDivision() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+
+	m_SU3[0] = m_SU;
+	K=4;
+	m_SU = 0;	
+	
+	UpdateData(FALSE);	
+}
+
+BOOL Ccalculrating::PreTranslateMessage(MSG* pMsg) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if(pMsg->message == WM_KEYDOWN)
+	{
+		switch(pMsg->wParam)
+		{
+		case VK_NUMPAD0:
+			Ccalculrating::OnNum0();
+			break;
+		case VK_NUMPAD1:
+			Ccalculrating::OnNum1();
+			break;
+		case VK_NUMPAD2:
+			Ccalculrating::OnNum2();
+			break;
+		case VK_NUMPAD3:
+			Ccalculrating::OnNum3();
+			break;
+		case VK_NUMPAD4:
+			Ccalculrating::OnNum4();
+			break;
+		case VK_NUMPAD5:
+			Ccalculrating::OnNum5();
+			break;
+		case VK_NUMPAD6:
+			Ccalculrating::OnNum6();
+			break;
+		case VK_NUMPAD7:
+			Ccalculrating::OnNum7();
+			break;
+		case VK_NUMPAD8:
+			Ccalculrating::OnNum8();
+			break;
+		case VK_NUMPAD9:
+			Ccalculrating::OnNum9();
+			break;
+		case VK_ADD:
+			Ccalculrating::OnSum();
+			break;
+		case VK_SUBTRACT:
+			Ccalculrating::OnSub();
+			break;
+		case VK_MULTIPLY:
+			Ccalculrating::OnMulti();
+			break;
+		case VK_DIVIDE:
+			Ccalculrating::OnDivision();
+			break;
+		case VK_RETURN:
+			Ccalculrating::OnEffect();
+			return 0;
+		}
+	}
+
+	return CDialog::PreTranslateMessage(pMsg);
+}
