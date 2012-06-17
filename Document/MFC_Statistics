@@ -15,78 +15,78 @@ static char THIS_FILE[] = __FILE__;
 
 CStatistics::CStatistics(CWnd* pParent /*=NULL*/)
 	: CDialog(CStatistics::IDD, pParent)
+{
+	//{{AFX_DATA_INIT(CStatistics)
+	m_edStartPoint = _T("");
+	m_edEndPoint = _T("");
+	//}}AFX_DATA_INIT
+}
+
+
+void CStatistics::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CStatistics)
+	DDX_Control(pDX, IDC_EXPENSE_STATISTICS, m_listExpense);
+	DDX_Control(pDX, IDC_INCOME_STATISTICS, m_listIncome);
+	DDX_Text(pDX, IDC_SEARCH_START_POINT, m_edStartPoint);
+	DDX_Text(pDX, IDC_SEARCH_END_POINT, m_edEndPoint);
+	//}}AFX_DATA_MAP
+}
+
+
+BEGIN_MESSAGE_MAP(CStatistics, CDialog)
+	//{{AFX_MSG_MAP(CStatistics)
+	ON_BN_CLICKED(IDC_BUTTON_SEARCH, OnButtonSearch)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CStatistics message handlers
+
+BOOL CStatistics::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	
+	// TODO: Add extra initialization here
+	LV_COLUMN lvColumn;
+	char* list[3] = {"Î∂ÑÎ•ò", "Ï¥ù Í∏àÏï°", "Ï†êÏú†Ïú®"};
+	int nWidth[3] = {95, 80, 71};
+
+	// List ControlÏùò ÏπºÎüºÏùÑ ÏÑ§Ï†ïÌïúÎã§.
+	for(int i = 0 ; i < 4 ; i++)
 	{
-		//{{AFX_DATA_INIT(CStatistics)
-			m_edStartPoint = _T("");
-				m_edEndPoint = _T("");
-					//}}AFX_DATA_INIT
-					}
+		lvColumn.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
+		lvColumn.fmt = LVCFMT_LEFT;
+		lvColumn.pszText = list[i];
+		lvColumn.iSubItem = i;
+		lvColumn.cx = nWidth[i];
+		m_listIncome.InsertColumn(i, &lvColumn);
+		m_listExpense.InsertColumn(i, &lvColumn);
+	}
 
+	// List ControlÏùò Ïä§ÌÉÄÏùº Î≥ÄÍ≤Ω(Í∑∏Î¶¨Îìú ÎùºÏù∏ Ï∂îÍ∞Ä)
+	m_listIncome.SetExtendedStyle(m_listIncome.GetExtendedStyle() | LVS_EX_GRIDLINES);
+	m_listExpense.SetExtendedStyle(m_listExpense.GetExtendedStyle() | LVS_EX_GRIDLINES);
 
-					void CStatistics::DoDataExchange(CDataExchange* pDX)
-					{
-						CDialog::DoDataExchange(pDX);
-							//{{AFX_DATA_MAP(CStatistics)
-								DDX_Control(pDX, IDC_EXPENSE_STATISTICS, m_listExpense);
-									DDX_Control(pDX, IDC_INCOME_STATISTICS, m_listIncome);
-										DDX_Text(pDX, IDC_SEARCH_START_POINT, m_edStartPoint);
-											DDX_Text(pDX, IDC_SEARCH_END_POINT, m_edEndPoint);
-												//}}AFX_DATA_MAP
-												}
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}
 
-
-												BEGIN_MESSAGE_MAP(CStatistics, CDialog)
-													//{{AFX_MSG_MAP(CStatistics)
-														ON_BN_CLICKED(IDC_BUTTON_SEARCH, OnButtonSearch)
-															//}}AFX_MSG_MAP
-															END_MESSAGE_MAP()
-
-															/////////////////////////////////////////////////////////////////////////////
-															// CStatistics message handlers
-
-															BOOL CStatistics::OnInitDialog() 
-															{
-																CDialog::OnInitDialog();
-																	
-																		// TODO: Add extra initialization here
-																			LV_COLUMN lvColumn;
-																				char* list[3] = {"∫–∑˘", "√— ±›æ◊", "¡°¿Ø¿≤"};
-																					int nWidth[3] = {95, 80, 71};
-
-																						// List Control¿« ƒÆ∑≥¿ª º≥¡§«—¥Ÿ.
-																							for(int i = 0 ; i < 4 ; i++)
-																								{
-																										lvColumn.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
-																												lvColumn.fmt = LVCFMT_LEFT;
-																														lvColumn.pszText = list[i];
-																																lvColumn.iSubItem = i;
-																																		lvColumn.cx = nWidth[i];
-																																				m_listIncome.InsertColumn(i, &lvColumn);
-																																						m_listExpense.InsertColumn(i, &lvColumn);
-																																							}
-
-																																								// List Control¿« Ω∫≈∏¿œ ∫Ø∞Ê(±◊∏ÆµÂ ∂Û¿Œ √ﬂ∞°)
-																																									m_listIncome.SetExtendedStyle(m_listIncome.GetExtendedStyle() | LVS_EX_GRIDLINES);
-																																										m_listExpense.SetExtendedStyle(m_listExpense.GetExtendedStyle() | LVS_EX_GRIDLINES);
-
-																																											return TRUE;  // return TRUE unless you set the focus to a control
-																																												              // EXCEPTION: OCX Property Pages should return FALSE
-																																													      }
-
-																																													      void CStatistics::OnButtonSearch() 
-																																													      {
-																																													      	// TODO: Add your control notification handler code here
-																																															// ∏µÁ «◊∏Ò¿Ã ¿‘∑¬µ«¡ˆ æ æ“∞≈≥™,
-																																																UpdateData();
-																																																	if(!m_edStartPoint.IsEmpty() && !m_edEndPoint.IsEmpty())
-																																																		{
-																																																				// ¿‘∑¬«¸Ωƒ¿Ã ∏¬¡ˆ æ ¿ª∞ÊøÏ elseπÆ¿« ø°∑ØπÆ¿Â¿ª √‚∑¬
-																																																						if(m_edStartPoint.GetLength() == 10 && m_edEndPoint.GetLength() == 10)
-																																																								{
-																																																											IncomeSearch();
-																																																													}
-																																																														}
-																																																															else
-																																																																	MessageBox("«¸Ωƒ¿Ã ¿ﬂ∏¯µ«æ˙∞≈≥™ ∏µÁ «◊∏Ò¿Ã ¿‘∑¬µ«¡ˆ æ æ“Ω¿¥œ¥Ÿ.\n¿‘∑¬ øπ) 2005-01-01 »§¿∫ 2005-10-24", "∞Ê∞Ì!", MB_OK);
-																																																																		
-																																																																		}
+void CStatistics::OnButtonSearch() 
+{
+	// TODO: Add your control notification handler code here
+	// Î™®Îì† Ìï≠Î™©Ïù¥ ÏûÖÎ†•ÎêòÏßÄ ÏïäÏïòÍ±∞ÎÇò,
+	UpdateData();
+	if(!m_edStartPoint.IsEmpty() && !m_edEndPoint.IsEmpty())
+	{
+		// ÏûÖÎ†•ÌòïÏãùÏù¥ ÎßûÏßÄ ÏïäÏùÑÍ≤ΩÏö∞ elseÎ¨∏Ïùò ÏóêÎü¨Î¨∏Ïû•ÏùÑ Ï∂úÎ†•
+		if(m_edStartPoint.GetLength() == 10 && m_edEndPoint.GetLength() == 10)
+		{
+			IncomeSearch();
+		}
+	}
+	else
+		MessageBox("ÌòïÏãùÏù¥ ÏûòÎ™ªÎêòÏóàÍ±∞ÎÇò Î™®Îì† Ìï≠Î™©Ïù¥ ÏûÖÎ†•ÎêòÏßÄ ÏïäÏïòÏäµÎãàÎã§.\nÏûÖÎ†• Ïòà) 2005-01-01 ÌòπÏùÄ 2005-10-24", "Í≤ΩÍ≥†!", MB_OK);
+	
+}
