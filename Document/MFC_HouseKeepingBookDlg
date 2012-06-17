@@ -81,3 +81,59 @@ CHouseKeepingBookDlg::CHouseKeepingBookDlg(CWnd* pParent /*=NULL*/)
 
 	m_bCalcul = m_bStatistics = FALSE;
 }
+
+
+void CHouseKeepingBookDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CHouseKeepingBookDlg)
+	DDX_Control(pDX, IDC_EXPENSE_SORT, m_cbExSort);
+	DDX_Control(pDX, IDC_INCOME_SORT, m_cbInSort);
+	DDX_Control(pDX, IDC_INCOME_LIST, m_listIncomeControl);
+	DDX_Control(pDX, IDC_EXPENSE_LIST, m_listExpenseControl);
+	DDX_Text(pDX, IDC_INCOME_MEMO, m_edInMemo);
+	DDX_Text(pDX, IDC_INCOME_MONEY, m_edInMoney);
+	DDX_CBString(pDX, IDC_INCOME_SORT, m_edInSort);
+	DDX_Text(pDX, IDC_INCOME_DATE, m_edInDate);
+	DDX_Text(pDX, IDC_EXPENSE_DATE, m_edExDate);
+	DDX_Text(pDX, IDC_EXPENSE_MEMO, m_edExMemo);
+	DDX_Text(pDX, IDC_EXPENSE_MONEY, m_edExMoney);
+	DDX_CBString(pDX, IDC_EXPENSE_SORT, m_edExSort);
+	DDX_Text(pDX, IDC_TOTAL_INCOME, m_edTotalIncome);
+	DDX_Text(pDX, IDC_TOTAL_EXPENSE, m_edTotalExpense);
+	DDX_Text(pDX, IDC_REMAIN_MONEY, m_edRemainMoney);
+	//}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CHouseKeepingBookDlg, CDialog)
+	//{{AFX_MSG_MAP(CHouseKeepingBookDlg)
+	ON_WM_SYSCOMMAND()
+	ON_WM_PAINT()
+	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON_END, OnButtonEnd)
+	ON_BN_CLICKED(IDC_INCOME_ADD, OnIncomeAdd)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_INCOME_LIST, OnItemchangedIncomeList)
+	ON_BN_CLICKED(IDC_INCOME_MODIFY, OnIncomeModify)
+	ON_BN_CLICKED(IDC_INCOME_DELETE, OnIncomeDelete)
+	ON_BN_CLICKED(IDC_INCOME_REWRITE, OnIncomeRewrite)
+	ON_BN_CLICKED(IDC_EXPENSE_ADD, OnExpenseAdd)
+	ON_BN_CLICKED(IDC_EXPENSE_DELETE, OnExpenseDelete)
+	ON_BN_CLICKED(IDC_EXPENSE_MODIFY, OnExpenseModify)
+	ON_BN_CLICKED(IDC_EXPENSE_REWRITE, OnExpenseRewrite)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_EXPENSE_LIST, OnItemchangedExpenseList)
+	ON_BN_CLICKED(IDC_INCOME_ADD_SORT, OnIncomeAddSort)
+	ON_BN_CLICKED(IDC_INCOME_DEL_SORT, OnIncomeDelSort)
+	ON_BN_CLICKED(IDC_EXPENSE_ADD_SORT, OnExpenseAddSort)
+	ON_BN_CLICKED(IDC_EXPENSE_DEL_SORT, OnExpenseDelSort)
+	ON_WM_CLOSE()
+	ON_BN_CLICKED(IDC_INCOME_CALENDAR, OnIncomeCalendar)
+	ON_BN_CLICKED(IDC_EXPENSE_CALENDAR, OnExpenseCalendar)
+	ON_BN_CLICKED(IDC_BUTTON_CALC, OnButtonCalc)
+	ON_BN_CLICKED(IDC_BUTTON_STATISTICS, OnButtonStatistics)
+	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_BUTTON_OPEN, OnBnClickedButtonOpen)
+	ON_BN_CLICKED(IDC_BUTTON_SAVE, OnBnClickedButtonSave)
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CHouseKeepingBookDlg message handlers
