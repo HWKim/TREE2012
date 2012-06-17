@@ -602,3 +602,92 @@ void CHouseKeepingBookDlg::OnExpenseRewrite()
 	RemainMoney();
 	UpdateData(FALSE);
 }
+
+
+void CHouseKeepingBookDlg::OnItemchangedExpenseList(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+	// TODO: Add your control notification handler code here
+	// ListControl에서 선택된 내용을 멤버 변수에 저장
+	m_nExSelectedItem = pNMListView->iItem;
+
+	m_edExDate = m_listExpenseControl.GetItemText(m_nExSelectedItem, 0);
+	m_edExSort = m_listExpenseControl.GetItemText(m_nExSelectedItem, 1);
+	m_edExMemo = m_listExpenseControl.GetItemText(m_nExSelectedItem, 2);
+	m_edExMoney= m_listExpenseControl.GetItemText(m_nExSelectedItem, 3);
+
+	((CButton*) GetDlgItem(IDC_EXPENSE_MODIFY))->EnableWindow(TRUE);
+	((CButton*) GetDlgItem(IDC_EXPENSE_DELETE))->EnableWindow(TRUE);
+
+	TotalExpense();
+	RemainMoney();
+	UpdateData(FALSE);
+
+	*pResult = 0;
+}
+
+void CHouseKeepingBookDlg::OnIncomeAddSort() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+
+	// 사용자가 입력한 값이 비어있지 않았을 때 추가버튼을 눌렀을 경우 아래 문장을 처리
+	// if(m_edInSort.GetLength() == 0) return;
+	if(!m_edInSort.IsEmpty())
+	{
+		// 콤보박스 내에서 사용자가 입력한 값의 문자열을 검색해서 해당 값이 없으면,
+		// CComboBoxMemberVariables.findstring(검색 시작값, 사용자 입력값);
+		if(m_cbInSort.FindString(0, m_edInSort) == -1)
+		{
+			// 콤보박스 리스트에 문자열을 추가한다.
+			m_cbInSort.AddString(m_edInSort);
+			m_edInSort.Empty();
+			UpdateData(FALSE);
+		}
+		else
+			MessageBox("이미 존재하는 항목입니다!", "잠깐!!", MB_OK);
+	}
+	else
+		MessageBox("문자열을 입력해 주세요!!!", "잠깐!!", MB_OK);
+
+	UpdateData(FALSE);
+}
+
+void CHouseKeepingBookDlg::OnIncomeDelSort() 
+{
+	// TODO: Add your control notification handler code here
+	if(m_cbInSort.GetCurSel() >= 0)
+	{
+		m_cbInSort.DeleteString(m_cbInSort.GetCurSel());
+		m_edInSort.Empty();
+	}
+	else
+		MessageBox("삭제할 항목을 선택해 주세요!!!", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnExpenseAddSort() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+
+	// 사용자가 입력한 값이 비어있지 않았을 때 추가버튼을 눌렀을 경우 아래 문장을 처리
+	// if(m_edExSort.GetLength() == 0) return;
+	if(!m_edExSort.IsEmpty())
+	{
+		// 콤보박스 내에서 사용자가 입력한 값의 문자열을 검색해서 해당 값이 없으면,
+		// CComboBoxMemberVariables.findstring(검색 시작값, 사용자 입력값);
+		if(m_cbExSort.FindString(0, m_edExSort) == -1)
+		{
+			// 콤보박스 리스트에 문자열을 추가한다.
+			m_cbExSort.AddString(m_edExSort);
+			m_edExSort.Empty();
+			UpdateData(FALSE);
+		}
+		else
+			MessageBox("이미 존재하는 항목입니다!", "잠깐!!", MB_OK);
+	}
+	else
+		MessageBox("문자열을 입력해 주세요!!!", "잠깐!!", MB_OK);
+
+	UpdateData(FALSE);
+}
