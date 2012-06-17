@@ -154,3 +154,33 @@ HCURSOR Ccalculrating::OnQueryDragIcon()
 {
 	return (HCURSOR) m_hIcon;
 }
+
+
+
+void Ccalculrating::OnNum1() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU *= 10;
+	m_SU += 1;
+	UpdateData(FALSE);
+}
+
+void Ccalculrating::OnNum2() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU *= 10;
+	m_SU += 2;
+	UpdateData(FALSE);
+}
