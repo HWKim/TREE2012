@@ -184,3 +184,124 @@ void Ccalculrating::OnNum2()
 	m_SU += 2;
 	UpdateData(FALSE);
 }
+
+
+void Ccalculrating::OnNum3() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU *= 10;
+	m_SU += 3;
+	UpdateData(FALSE);	
+}
+
+
+void Ccalculrating::OnNum4() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU *= 10;
+	m_SU += 4;
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnNum5() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU *= 10;
+	m_SU += 5;
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnNum6() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU *= 10;
+	m_SU += 6;
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnNum7() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU *= 10;
+	m_SU += 7;
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnNum8() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU *= 10;
+	m_SU += 8;
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnNum9() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU *= 10;
+	m_SU += 9;
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnNum0() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	if(i==1)
+	{
+		m_SU = 0;
+		i=0;
+	}
+	m_SU = m_SU * 10;
+	UpdateData(FALSE);	
+}
+
+void Ccalculrating::OnClear() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	m_SU=0;
+	UpdateData(FALSE);	
+}
