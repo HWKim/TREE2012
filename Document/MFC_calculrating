@@ -1,0 +1,157 @@
+#include "stdafx.h"
+#include "HouseKeepingBook.h"
+#include "calculrating.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+double  m_SU2[15];
+double  m_SU3[2];
+double	K,i;
+
+#define VK_NUMPAD0 0x60 
+#define VK_NUMPAD1 0x61
+#define VK_NUMPAD2 0x62 
+#define VK_NUMPAD3 0x63 
+#define VK_NUMPAD4 0x64 
+#define VK_NUMPAD5 0x65 
+#define VK_NUMPAD6 0x66 
+#define VK_NUMPAD7 0x67
+#define VK_NUMPAD8 0x68 
+#define VK_NUMPAD9 0x69  
+ 
+
+ #define VK_ADD 0x6B
+ #define VK_MULTIPLY 0x6A
+ #define VK_SUBTRACT 0x6D 
+ #define VK_DIVIDE 0x6F 
+ #define VK_RETURN 0x0D  
+
+ /////////////////////////////////////////////////////////////////////////////
+ // Ccalculrating dialog
+
+
+ Ccalculrating::Ccalculrating(CWnd* pParent /*=NULL*/)
+ 	: CDialog(Ccalculrating::IDD, pParent)
+	{
+		//{{AFX_DATA_INIT(Ccalculrating)
+			m_SU = 0.0;
+					// NOTE: the ClassWizard will add member initialization here
+						//}}AFX_DATA_INIT
+							m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+							}
+
+
+							void Ccalculrating::DoDataExchange(CDataExchange* pDX)
+							{
+								CDialog::DoDataExchange(pDX);
+									//{{AFX_DATA_MAP(Ccalculrating)
+										DDX_Text(pDX, IDC_INCOME_OUTPUT, m_SU);
+												// NOTE: the ClassWizard will add DDX and DDV calls here
+													//}}AFX_DATA_MAP
+													}
+
+
+													BEGIN_MESSAGE_MAP(Ccalculrating, CDialog)
+														//{{AFX_MSG_MAP(Ccalculrating)
+															ON_WM_SYSCOMMAND()
+																ON_WM_PAINT()
+																	ON_WM_QUERYDRAGICON()
+																		ON_BN_CLICKED(ID_NUM1, OnNum1)
+																			ON_BN_CLICKED(ID_NUM2, OnNum2)
+																				ON_BN_CLICKED(ID_NUM3, OnNum3)
+																					ON_BN_CLICKED(ID_NUM4, OnNum4)
+																						ON_BN_CLICKED(ID_NUM5, OnNum5)
+																							ON_BN_CLICKED(ID_NUM6, OnNum6)
+																								ON_BN_CLICKED(ID_NUM7, OnNum7)
+																									ON_BN_CLICKED(ID_NUM8, OnNum8)
+																										ON_BN_CLICKED(ID_NUM9, OnNum9)
+																											ON_BN_CLICKED(ID_NUM0, OnNum0)
+																												ON_BN_CLICKED(ID_CLEAR, OnClear)
+																													ON_BN_CLICKED(ID_EFFECT, OnEffect)
+																														ON_BN_CLICKED(ID_SUM, OnSum)
+																															ON_BN_CLICKED(ID_SUB, OnSub)
+																																ON_BN_CLICKED(ID_MULTI, OnMulti)
+																																	ON_BN_CLICKED(ID_DIVISION, OnDivision)
+																																		//}}AFX_MSG_MAP
+																																		END_MESSAGE_MAP()
+
+																																		/////////////////////////////////////////////////////////////////////////////
+																																		// Ccalculrating message handlers
+
+																																		BOOL Ccalculrating::OnInitDialog()
+																																		{
+																																			CDialog::OnInitDialog();
+
+																																				// Add "About..." menu item to system menu.
+
+																																					// IDM_ABOUTBOX must be in the system command range.
+																																						ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+																																							ASSERT(IDM_ABOUTBOX < 0xF000);
+
+																																								CMenu* pSysMenu = GetSystemMenu(FALSE);
+																																									if (pSysMenu != NULL)
+																																										{
+																																												CString strAboutMenu;
+																																														strAboutMenu.LoadString(IDS_ABOUTBOX);
+																																																if (!strAboutMenu.IsEmpty())
+																																																		{
+																																																					pSysMenu->AppendMenu(MF_SEPARATOR);
+																																																								pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+																																																										}
+																																																											}
+
+																																																												// Set the icon for this dialog.  The framework does this automatically
+																																																													//  when the application's main window is not a dialog
+																																																														SetIcon(m_hIcon, TRUE);			// Set big icon
+																																																															SetIcon(m_hIcon, FALSE);		// Set small icon
+																																																																
+																																																																	// TODO: Add extra initialization here
+																																																																		
+																																																																			return TRUE;  // return TRUE  unless you set the focus to a control
+																																																																			}
+																																																																			void Ccalculrating::OnSysCommand(UINT nID, LPARAM lParam)
+																																																																			{
+																																																																				if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+																																																																					{
+
+																																																																						}
+																																																																							else
+																																																																								{
+																																																																										CDialog::OnSysCommand(nID, lParam);
+																																																																											}
+																																																																											}
+
+																																																																											void Ccalculrating::OnPaint() 
+																																																																											{
+																																																																												if (IsIconic())
+																																																																													{
+																																																																															CPaintDC dc(this); // device context for painting
+
+																																																																																	SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+
+																																																																																			// Center icon in client rectangle
+																																																																																					int cxIcon = GetSystemMetrics(SM_CXICON);
+																																																																																							int cyIcon = GetSystemMetrics(SM_CYICON);
+																																																																																									CRect rect;
+																																																																																											GetClientRect(&rect);
+																																																																																													int x = (rect.Width() - cxIcon + 1) / 2;
+																																																																																															int y = (rect.Height() - cyIcon + 1) / 2;
+
+																																																																																																	// Draw the icon
+																																																																																																			dc.DrawIcon(x, y, m_hIcon);
+																																																																																																				}
+																																																																																																					else
+																																																																																																						{
+																																																																																																								CDialog::OnPaint();
+																																																																																																									}
+																																																																																																									}
+
+																																																																																																									HCURSOR Ccalculrating::OnQueryDragIcon()
+																																																																																																									{
+																																																																																																										return (HCURSOR) m_hIcon;
+																																																																																																										}
+
