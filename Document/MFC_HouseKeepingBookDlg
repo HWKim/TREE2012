@@ -691,3 +691,128 @@ void CHouseKeepingBookDlg::OnExpenseAddSort()
 
 	UpdateData(FALSE);
 }
+
+
+void CHouseKeepingBookDlg::OnExpenseDelSort() 
+{
+	// TODO: Add your control notification handler code here
+	if(m_cbExSort.GetCurSel() >= 0)
+	{
+		m_cbExSort.DeleteString(m_cbExSort.GetCurSel());
+		m_edExSort.Empty();
+	}
+	else
+		MessageBox("삭제할 항목을 선택해 주세요!!!", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnClose() 
+{
+	// TODO: Add your message handler code here and/or call default
+	// 윈도우 상단의 X버튼의 구현부분, 클릭시 다시 한번 더 확인함.
+	if(MessageBox("정말 종료하시겠습니까?", "경고!", MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
+		CDialog::OnClose();
+}
+
+
+BOOL CHouseKeepingBookDlg::PreTranslateMessage(MSG *pMsg)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	// esc, enter키를 눌러도 창이 종료되지 않도록 지정
+	if(pMsg->message == WM_KEYDOWN)
+	{
+		if(pMsg->wParam == VK_ESCAPE) return TRUE;
+		if(pMsg->wParam == VK_RETURN) return TRUE;
+	}       
+
+	return CDialog::PreTranslateMessage(pMsg);
+}
+
+void CHouseKeepingBookDlg::OnIncomeCalendar() 
+{
+	// TODO: Add your control notification handler code here
+	// 현재 날짜를 Today변수에 저장
+	CString Today;
+	CTime today = CTime::GetCurrentTime();
+
+	if(today.GetMonth() >= 10)
+		Today.Format("%d-%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+	else
+		Today.Format("%d-0%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+
+	if(today.GetDay() >= 10)
+		Today.Format("%d-%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+	else
+		Today.Format("%d-0%d-0%d", today.GetYear(), today.GetMonth(), today.GetDay());
+
+	// 날짜에 해당하는 EditBox에 오늘 날짜를 넣는다.
+	m_edInDate = Today;
+	// 변수에 있는 값을 컨트롤의 화면에 나타내기 위한 UpdateData(FALSE)선언
+	UpdateData(FALSE);
+}
+
+void CHouseKeepingBookDlg::OnExpenseCalendar() 
+{
+	// TODO: Add your control notification handler code here
+	// 현재 날짜를 Today변수에 저장
+	CString Today;
+	CTime today = CTime::GetCurrentTime();
+
+	if(today.GetMonth() >= 10)
+		Today.Format("%d-%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+	else
+		Today.Format("%d-0%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+
+	if(today.GetDay() >= 10)
+		Today.Format("%d-%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+	else
+		Today.Format("%d-0%d-0%d", today.GetYear(), today.GetMonth(), today.GetDay());
+
+	// 날짜에 해당하는 EditBox에 오늘 날짜를 넣는다.
+	m_edExDate = Today;
+	// 변수에 있는 값을 컨트롤의 화면에 나타내기 위한 UpdateData(FALSE)선언
+	UpdateData(FALSE);
+}
+
+void CHouseKeepingBookDlg::TotalIncome()
+{
+	m_TotalInSum = 0;
+
+	// 수입부분의 리스트 개수를 카운트한다.
+	for(int i = 0 ; i < m_listIncomeControl.GetItemCount() ; i++)
+	{
+		// 4번째 칼럼 값을 읽어온다.
+		CString str = m_listIncomeControl.GetItemText(i, 3);
+		// 읽어온 값을 정수형으로 변환하여 그 합계를 구함
+		m_TotalInSum += atoi(str);
+	}
+	// 출력 부분
+	m_edTotalIncome = m_TotalInSum;
+}
+
+void CHouseKeepingBookDlg::TotalExpense()
+{
+	m_TotalExSum = 0;
+
+	// 지출부분의 리스트 개수를 카운트한다.
+	for(int i = 0 ; i < m_listExpenseControl.GetItemCount() ; i++)
+	{
+		// 4번째 칼럼 값을 읽어온다.
+		CString str= m_listExpenseControl.GetItemText(i, 3);
+		// 읽어온 값을 정수형으로 변환하여 그 합계를 구함
+		m_TotalExSum += atoi(str);
+	}
+	// 출력 부분
+	m_edTotalExpense = m_TotalExSum;
+}
+
+void CHouseKeepingBookDlg::RemainMoney()
+{
+	TotalIncome();
+	TotalExpense();
+
+	int RemainMoney = 0;
+	RemainMoney = m_TotalInSum - m_TotalExSum;
+
+	m_edRemainMoney = RemainMoney;
+
+}
