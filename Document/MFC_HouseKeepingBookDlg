@@ -257,3 +257,146 @@ void CHouseKeepingBookDlg::OnButtonEnd()
 	if(MessageBox("정말 종료하시겠습니까?", "경고!", MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
 		OnCancel();
 }
+
+void CHouseKeepingBookDlg::OnIncomeAdd() 
+{
+	// TODO: Add your control notification handler code here
+	int nCount = m_listIncomeControl.GetItemCount();
+
+	LV_ITEM lvItem;
+
+	UpdateData(TRUE);
+
+	// 모든 항목이 String으로 채워져 있는가를 우선 검색
+	if(!m_edInDate.IsEmpty() && !m_edInSort.IsEmpty() && !m_edInMemo.IsEmpty() && !m_edInMoney.IsEmpty())
+	{
+		// 날짜 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 0;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edInDate;
+		m_listIncomeControl.InsertItem(&lvItem);
+
+		// 분류 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 1;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edInSort;
+		m_listIncomeControl.SetItem(&lvItem);
+
+		// 메모 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 2;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edInMemo;
+		m_listIncomeControl.SetItem(&lvItem);
+		
+		// 금액 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 3;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edInMoney;
+		m_listIncomeControl.SetItem(&lvItem);
+
+		// 입력 후 각 항목의 EditBox내용 초기화
+		m_edInDate.Empty();
+		m_edInSort.Empty();
+		m_edInMemo.Empty();
+		m_edInMoney.Empty();
+
+		((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(FALSE);
+		((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(FALSE);
+
+		// 입력사항을 결산부분에 반영
+		TotalIncome();
+		RemainMoney();
+		UpdateData(FALSE);
+	}
+	else
+		// 하나의 항목이라도 입력이 안되었을 경우 에러메시지 출력
+		MessageBox("모든 항목을 입력해 주세요.", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnItemchangedIncomeList(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+	// TODO: Add your control notification handler code here
+	// ListControl에서 선택된 내용을 멤버 변수에 저장
+	m_nInSelectedItem = pNMListView->iItem;
+
+	m_edInDate = m_listIncomeControl.GetItemText(m_nInSelectedItem, 0);
+	m_edInSort = m_listIncomeControl.GetItemText(m_nInSelectedItem, 1);
+	m_edInMemo = m_listIncomeControl.GetItemText(m_nInSelectedItem, 2);
+	m_edInMoney= m_listIncomeControl.GetItemText(m_nInSelectedItem, 3);
+
+	((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(TRUE);
+	((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(TRUE);
+
+	TotalIncome();
+	RemainMoney();
+	UpdateData(FALSE);
+
+	*pResult = 0;
+}
+
+void CHouseKeepingBookDlg::OnIncomeModify() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	CString strDate, strSort, strMemo, strMoney;
+	strDate = m_edInDate;
+	strSort = m_edInSort;
+	strMemo = m_edInMemo;
+	strMoney= m_edInMoney;
+
+	// ListControl에서 선택된 항목이 있을경우 다음의 코드를 실행
+	if(m_nInSelectedItem >= 0)
+	{
+		if(!m_edInDate.IsEmpty() && !m_edInSort.IsEmpty() && !m_edInMemo.IsEmpty() && !m_edInMoney.IsEmpty())
+		{
+			LV_ITEM lvItem;
+			CString strIndex;
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nInSelectedItem;
+			lvItem.iSubItem = 0;
+			lvItem.pszText = (LPSTR)(LPCSTR)strDate;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nInSelectedItem;
+			lvItem.iSubItem = 1;
+			lvItem.pszText = (LPSTR)(LPCSTR)strSort;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nInSelectedItem;
+			lvItem.iSubItem = 2;
+			lvItem.pszText = (LPSTR)(LPCSTR)strMemo;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nInSelectedItem;
+			lvItem.iSubItem = 3;
+			lvItem.pszText = (LPSTR)(LPCSTR)strMoney;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			m_edInDate.Empty();
+			m_edInSort.Empty();
+			m_edInMemo.Empty();
+			m_edInMoney.Empty();
+
+			((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(FALSE);
+			((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(FALSE);
+
+			// 입력사항을 결산부분에 반영
+			TotalIncome();
+			RemainMoney();
+			UpdateData(FALSE);
+		}
+		else
+			MessageBox("모든 항목을 입력해 주세요.", "잠깐!!", MB_OK);
+	}
+	else
+		MessageBox("아이템을 선택하지 않았습니다.", "잠깐!!", MB_OK);
+}
