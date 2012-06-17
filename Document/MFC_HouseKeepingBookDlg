@@ -137,3 +137,65 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CHouseKeepingBookDlg message handlers
+
+
+
+BOOL CHouseKeepingBookDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	// Add "About..." menu item to system menu.
+
+	// IDM_ABOUTBOX must be in the system command range.
+	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+	ASSERT(IDM_ABOUTBOX < 0xF000);
+
+	CMenu* pSysMenu = GetSystemMenu(FALSE);
+	if (pSysMenu != NULL)
+	{
+		CString strAboutMenu;
+		strAboutMenu.LoadString(IDS_ABOUTBOX);
+		if (!strAboutMenu.IsEmpty())
+		{
+			pSysMenu->AppendMenu(MF_SEPARATOR);
+			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+		}
+	}
+
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, FALSE);		// Set small icon
+	
+	// TODO: Add extra initialization here
+	// List Control의 스타일 변경
+	LV_COLUMN lvColumn;
+	char* list[4] = {"날짜", "분류", "메모", "금액"};
+	int nWidth[4] = {70, 80, 91, 70};
+
+	// List Control의 칼럼을 설정한다.
+	for(int i = 0; i < 4 ; i++)
+	{
+		lvColumn.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
+		lvColumn.fmt = LVCFMT_LEFT;
+		lvColumn.pszText = list[i];
+		lvColumn.iSubItem = i;
+		lvColumn.cx = nWidth[i];
+		m_listIncomeControl.InsertColumn(i, &lvColumn);
+		m_listExpenseControl.InsertColumn(i, &lvColumn);
+	}
+
+	// List Control 스타일 변경 부분.
+	m_listIncomeControl.SetExtendedStyle(m_listIncomeControl.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	m_listExpenseControl.SetExtendedStyle(m_listExpenseControl.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	
+	// 수입 내역의 수정/삭제 버튼을 비활성화 시킨다.
+	((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(FALSE);
+	((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(FALSE);
+
+	// 지출 내역의 수정/삭제 버튼을 비활성화 시킨다.
+	((CButton*) GetDlgItem(IDC_EXPENSE_MODIFY))->EnableWindow(FALSE);
+	((CButton*) GetDlgItem(IDC_EXPENSE_DELETE))->EnableWindow(FALSE);
+	
+	return TRUE;  // return TRUE  unless you set the focus to a control
+}
