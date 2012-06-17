@@ -1,0 +1,92 @@
+#include "stdafx.h"
+#include "HouseKeepingBook.h"
+#include "HouseKeepingBookDlg.h"
+#include "Statistics.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CStatistics dialog
+
+
+CStatistics::CStatistics(CWnd* pParent /*=NULL*/)
+	: CDialog(CStatistics::IDD, pParent)
+	{
+		//{{AFX_DATA_INIT(CStatistics)
+			m_edStartPoint = _T("");
+				m_edEndPoint = _T("");
+					//}}AFX_DATA_INIT
+					}
+
+
+					void CStatistics::DoDataExchange(CDataExchange* pDX)
+					{
+						CDialog::DoDataExchange(pDX);
+							//{{AFX_DATA_MAP(CStatistics)
+								DDX_Control(pDX, IDC_EXPENSE_STATISTICS, m_listExpense);
+									DDX_Control(pDX, IDC_INCOME_STATISTICS, m_listIncome);
+										DDX_Text(pDX, IDC_SEARCH_START_POINT, m_edStartPoint);
+											DDX_Text(pDX, IDC_SEARCH_END_POINT, m_edEndPoint);
+												//}}AFX_DATA_MAP
+												}
+
+
+												BEGIN_MESSAGE_MAP(CStatistics, CDialog)
+													//{{AFX_MSG_MAP(CStatistics)
+														ON_BN_CLICKED(IDC_BUTTON_SEARCH, OnButtonSearch)
+															//}}AFX_MSG_MAP
+															END_MESSAGE_MAP()
+
+															/////////////////////////////////////////////////////////////////////////////
+															// CStatistics message handlers
+
+															BOOL CStatistics::OnInitDialog() 
+															{
+																CDialog::OnInitDialog();
+																	
+																		// TODO: Add extra initialization here
+																			LV_COLUMN lvColumn;
+																				char* list[3] = {"분류", "총 금액", "점유율"};
+																					int nWidth[3] = {95, 80, 71};
+
+																						// List Control의 칼럼을 설정한다.
+																							for(int i = 0 ; i < 4 ; i++)
+																								{
+																										lvColumn.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
+																												lvColumn.fmt = LVCFMT_LEFT;
+																														lvColumn.pszText = list[i];
+																																lvColumn.iSubItem = i;
+																																		lvColumn.cx = nWidth[i];
+																																				m_listIncome.InsertColumn(i, &lvColumn);
+																																						m_listExpense.InsertColumn(i, &lvColumn);
+																																							}
+
+																																								// List Control의 스타일 변경(그리드 라인 추가)
+																																									m_listIncome.SetExtendedStyle(m_listIncome.GetExtendedStyle() | LVS_EX_GRIDLINES);
+																																										m_listExpense.SetExtendedStyle(m_listExpense.GetExtendedStyle() | LVS_EX_GRIDLINES);
+
+																																											return TRUE;  // return TRUE unless you set the focus to a control
+																																												              // EXCEPTION: OCX Property Pages should return FALSE
+																																													      }
+
+																																													      void CStatistics::OnButtonSearch() 
+																																													      {
+																																													      	// TODO: Add your control notification handler code here
+																																															// 모든 항목이 입력되지 않았거나,
+																																																UpdateData();
+																																																	if(!m_edStartPoint.IsEmpty() && !m_edEndPoint.IsEmpty())
+																																																		{
+																																																				// 입력형식이 맞지 않을경우 else문의 에러문장을 출력
+																																																						if(m_edStartPoint.GetLength() == 10 && m_edEndPoint.GetLength() == 10)
+																																																								{
+																																																											IncomeSearch();
+																																																													}
+																																																														}
+																																																															else
+																																																																	MessageBox("형식이 잘못되었거나 모든 항목이 입력되지 않았습니다.\n입력 예) 2005-01-01 혹은 2005-10-24", "경고!", MB_OK);
+																																																																		
+																																																																		}
