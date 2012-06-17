@@ -1005,3 +1005,65 @@ void CHouseKeepingBookDlg::OnBnClickedButtonOpen()
 		fclose(fp);
 	}
 }
+
+
+void CHouseKeepingBookDlg::OnBnClickedButtonSave()
+{
+	// TODO: Add your control notification handler code here
+	// 파일 저장형식 설정
+	char Filter[] = "TXT File(*.txt) |*.txt| 모든파일(*.*) |*.*|";
+	CFileDialog pDlg(FALSE, "TXT File(*.txt)", "UserData", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, Filter, NULL);
+
+	CString Date;
+	CString Category;
+	CString Memo;
+	CString Money;
+
+
+	// 저장 창을 Modal()로 띄움
+	if(pDlg.DoModal() == IDOK)
+	{
+		FILE *fp;
+		// 쓰기 모드
+		fp = fopen(pDlg.GetPathName(), "w");
+
+		fprintf(fp, "%d\n", m_listIncomeControl.GetItemCount());
+
+		// 수입부분 리스트컨트롤의 아이템들을 읽어들인 후,
+		for(int i = 0 ; i < m_listIncomeControl.GetItemCount() ; i++)
+		{
+			// 각 변수에 0 ~ 3까지의 칼럼값을 저장
+			Date = m_listIncomeControl.GetItemText(i, 0);
+			Category = m_listIncomeControl.GetItemText(i, 1);
+			Memo = m_listIncomeControl.GetItemText(i, 2);
+			Money = m_listIncomeControl.GetItemText(i, 3);
+
+			// 파일에 저장
+			fprintf(fp, "%s\t", Date);
+			fprintf(fp, "%s\t", Category);
+			fprintf(fp, "%s\t", Memo);
+			fprintf(fp, "%s\t", Money);
+			fprintf(fp, "\n");
+		}
+
+		fprintf(fp, "%d\n", m_listExpenseControl.GetItemCount());
+		// 지출부분 리스트 컨트롤의 아이템들을 읽어들인 후,
+		for(int j = 0 ; j < m_listExpenseControl.GetItemCount() ; j++)
+		{
+			Date = m_listExpenseControl.GetItemText(j, 0);
+			Category = m_listExpenseControl.GetItemText(j, 1);
+			Memo = m_listExpenseControl.GetItemText(j, 2);
+			Money = m_listExpenseControl.GetItemText(j, 3);
+
+			fprintf(fp, "%s\t", Date);
+			fprintf(fp, "%s\t", Category);
+			fprintf(fp, "%s\t", Memo);
+			fprintf(fp, "%s\t", Money);
+			fprintf(fp, "\n");
+		}
+
+		// 파일포인터 반환
+		fclose(fp);
+
+	}
+}
