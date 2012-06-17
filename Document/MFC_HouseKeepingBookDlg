@@ -400,3 +400,103 @@ void CHouseKeepingBookDlg::OnIncomeModify()
 	else
 		MessageBox("아이템을 선택하지 않았습니다.", "잠깐!!", MB_OK);
 }
+
+
+void CHouseKeepingBookDlg::OnIncomeDelete() 
+{
+	// TODO: Add your control notification handler code here
+	// ListControl에서 선택된 항목이 있을경우 다음의 코드를 실행
+	if(m_nInSelectedItem >= 0)
+	{
+		// 선택된 리스트 항목을 삭제
+		m_listIncomeControl.DeleteItem(m_nInSelectedItem);
+
+		m_edInDate.Empty();
+		m_edInSort.Empty();
+		m_edInMemo.Empty();
+		m_edInMoney.Empty();
+
+		((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(FALSE);
+		((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(FALSE);
+
+		// 입력사항을 결산부분에 반영
+		TotalIncome();
+		RemainMoney();
+		UpdateData(FALSE);
+	}
+	else
+		MessageBox("아이템을 선택하지 않았습니다.", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnIncomeRewrite() 
+{
+	// TODO: Add your control notification handler code here
+	m_edInDate.Empty();
+	m_edInSort.Empty();
+	m_edInMemo.Empty();
+	m_edInMoney.Empty();
+
+	// 입력사항을 결산부분에 반영
+	TotalIncome();
+	RemainMoney();
+	UpdateData(FALSE);
+}
+
+void CHouseKeepingBookDlg::OnExpenseAdd() 
+{
+	// TODO: Add your control notification handler code here
+	int nCount = m_listExpenseControl.GetItemCount();
+
+	LV_ITEM lvItem;
+
+	UpdateData(TRUE);
+
+	// 모든 항목이 String으로 채워져 있는가를 우선 검색
+	if(!m_edExDate.IsEmpty() && !m_edExSort.IsEmpty() && !m_edExMemo.IsEmpty() && !m_edExMoney.IsEmpty())
+	{
+		// 날짜 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 0;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edExDate;
+		m_listExpenseControl.InsertItem(&lvItem);
+
+		// 분류 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 1;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edExSort;
+		m_listExpenseControl.SetItem(&lvItem);
+
+		// 메모 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 2;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edExMemo;
+		m_listExpenseControl.SetItem(&lvItem);
+		
+		// 금액 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 3;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edExMoney;
+		m_listExpenseControl.SetItem(&lvItem);
+
+		// 입력 후 각 항목의 EditBox내용 초기화
+		m_edExDate.Empty();
+		m_edExSort.Empty();
+		m_edExMemo.Empty();
+		m_edExMoney.Empty();
+
+		((CButton*) GetDlgItem(IDC_EXPENSE_MODIFY))->EnableWindow(FALSE);
+		((CButton*) GetDlgItem(IDC_EXPENSE_DELETE))->EnableWindow(FALSE);
+
+		// 입력사항을 결산부분에 반영
+		TotalExpense();
+		RemainMoney();
+		UpdateData(FALSE);
+	}
+	else
+		// 하나의 항목이라도 입력이 안되었을 경우 에러메시지 출력
+		MessageBox("모든 항목을 입력해 주세요.", "잠깐!!", MB_OK);
+}
