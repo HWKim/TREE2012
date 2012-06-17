@@ -816,3 +816,192 @@ void CHouseKeepingBookDlg::RemainMoney()
 	m_edRemainMoney = RemainMoney;
 
 }
+
+
+void CHouseKeepingBookDlg::OnButtonCalc() 
+{
+	// TODO: Add your control notification handler code here
+	if(!m_bCalcul)
+	{
+		m_dlgCalcul.Create(IDD_CALCULATOR, this);
+		CRect rectCalulator, rectCalculatorTable;
+		GetWindowRect(&rectCalulator);
+		m_dlgCalcul.GetWindowRect(&rectCalculatorTable);
+		m_dlgCalcul.MoveWindow(rectCalulator.right, rectCalulator.top, rectCalculatorTable.Width(), rectCalculatorTable.Height());
+		m_dlgCalcul.ShowWindow(SW_SHOW);
+		m_bCalcul = TRUE;
+	}
+	else
+	{
+		if(m_dlgCalcul.IsWindowVisible())
+		{
+			// 코드 테이블의 대화상자를 감춘다.
+			m_dlgCalcul.ShowWindow(SW_HIDE);
+   
+			// 코드 테이블 대화상자를 없앤다.
+			m_dlgCalcul.DestroyWindow();
+			m_bCalcul = FALSE;
+		}
+		else
+		{
+			m_dlgCalcul.ShowWindow(SW_SHOW);
+			m_bCalcul = TRUE;
+		}
+	}
+}
+
+void CHouseKeepingBookDlg::OnButtonStatistics() 
+{
+	// TODO: Add your control notification handler code here
+	CStatistics statDlg;
+	statDlg.DoModal();
+/*
+	if(!m_bStatistics)
+	{
+		m_dlgStatistics.Create(IDD_STATISTICS_DIALOG, this);
+		CRect rectStatistics, rectStatisticsTable;
+		GetWindowRect(&rectStatistics);
+		m_dlgStatistics.GetWindowRect(&rectStatisticsTable);
+		m_dlgStatistics.ShowWindow(SW_SHOW);
+		m_bStatistics = TRUE;
+	}
+	else
+	{
+		if(m_dlgStatistics.IsWindowVisible())
+		{
+			// 코드 테이블의 대화상자를 감춘다.
+			m_dlgStatistics.ShowWindow(SW_HIDE);
+   
+			// 코드 테이블 대화상자를 없앤다.
+			m_dlgStatistics.DestroyWindow();
+			m_bStatistics = FALSE;
+		}
+		else
+		{
+			m_dlgStatistics.ShowWindow(SW_SHOW);
+			m_bStatistics = TRUE;
+		}
+	}
+*/
+}
+
+void CHouseKeepingBookDlg::OnBnClickedButtonOpen()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	char Date[256];
+	char Category[256];
+	char Memo[256];
+	char Money[256];
+	int nCount;
+	
+	LV_ITEM lvItem;
+	
+	m_listExpenseControl.DeleteAllItems();
+	m_listIncomeControl.DeleteAllItems();
+	
+	
+	char Filter[] = "TXT File(*.txt) |*.txt| 모든파일(*.*) |*.*|";
+	CFileDialog pDlg(TRUE, "TXT File(*.txt)", "*.txt", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, Filter, NULL);
+
+	// 저장 창을 Modal()로 띄움
+	if(pDlg.DoModal() == IDOK)
+	{
+		FILE *fp;
+		// 읽기 모드
+		fp = fopen(pDlg.GetPathName(), "r");
+		
+		fscanf(fp, "%d", &nCount);
+		// 수입부분 리스트컨트롤의 아이템들을 읽어들인 후,
+		for(int i = 0 ; i < nCount ; i++)
+		{
+			int nCount = m_listIncomeControl.GetItemCount();
+			// 리스트컨트롤의 각 칼럼에 해당 값을 출력
+			fscanf(fp, "%s", Date);
+			fscanf(fp, "%s", Category);
+			fscanf(fp, "%s", Memo);
+			fscanf(fp, "%s", Money);
+
+			// 날짜 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 0;
+			lvItem.pszText = Date;
+			m_listIncomeControl.InsertItem(&lvItem);
+
+			// 분류 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 1;
+			lvItem.pszText = Category;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			// 메모 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 2;
+			lvItem.pszText = Memo;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			// 금액 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 3;
+			lvItem.pszText = Money;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			UpdateData(FALSE);
+		}
+
+		fscanf(fp, "%d", &nCount);
+		// 지출부분 리스트컨트롤의 아이템들을 읽어들인 후,
+		for(int j = 0 ; j < nCount ; j++)
+		{
+			int nCount = m_listExpenseControl.GetItemCount();
+			// 리스트컨트롤의 각 칼럼에 해당 값을 출력
+			fscanf(fp, "%s", Date);
+			fscanf(fp, "%s", Category);
+			fscanf(fp, "%s", Memo);
+			fscanf(fp, "%s", Money);
+			
+			// 날짜 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 0;
+			lvItem.pszText = Date;
+			m_listExpenseControl.InsertItem(&lvItem);
+
+			
+			// 분류 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 1;
+			lvItem.pszText = Category;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			
+			// 메모 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 2;
+			lvItem.pszText = Memo;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			
+			// 금액 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 3;
+			lvItem.pszText = Money;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			UpdateData(FALSE);
+		}
+		// 총 수입과 지출, 잔여금을 다시 계산한다.
+		TotalIncome();
+		TotalExpense();
+		RemainMoney();
+
+		UpdateData(FALSE);
+		fclose(fp);
+	}
+}
