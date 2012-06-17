@@ -2,71 +2,67 @@ package javabook.ch05;
 import java.io.*;
 public class quiz2_2 {
  
-  public static void main(String[] args)throws IOException {
-      BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
-          int ¼öÀÔ³»¿ªÀÔ·Â = 0, ÁöÃâ³»¿ªÀÔ·Â = 0, Á¤»êÁ¤º¸Ãâ·Â = 0, Á¾·á = 0, ±İ¾× = 0, ±³Åëºñ = 0, ½Äºñ = 0, ±³À°ºñ = 0, ÃÑ¼öÀÔ¾× = 0,ÃÑÁöÃâ¾× = 0, ÃÑÀÜ¾× = 0;  
-	      int ±³À°ºñÁöÃâºñÁß = 0, ±³ÅëºñÁöÃâºñÁß = 0, ½ÄºñÁöÃâºñÁß = 0;
-	          char p = 'Y';
-		      char Y = 'Y';
-		          char N = 'N';
-			   int a = 0;
-			    
-			                       while(p != 'n'){
-					                             System.out.println("°¡°èºÎ v 0.4");
-								                           System.out.println("1.¼öÀÔ³»¿ªÀÔ·Â, 2. ÁöÃâ³»¿ªÀÔ·Â, 3. Á¤»êÁ¤º¸Ãâ·Â, 4. Á¾·á");
-											                System.out.println("¸Ş´º¸¦ ¼±ÅÃÇÏ¼¼¿ä.[1,2,3,4]");
-													             a = Integer.parseInt(in.readLine());
-														                                   
-																		                
-																				                             
-																							                                
-																											            
-																												               switch(a)
-																													                  {
-																															           
-																																               case 1:
-																																	                   System.out.println("¼öÀÔ³»¿ªÀÔ·ÂÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.");
-																																			               System.out.println("¼öÀÔÇ×¸ñ³»¿ª°ú ±İ¾×À» ÀÔ·ÂÇÏ¼¼¿ä : " );
-																																				                   ±İ¾× = Integer.parseInt(in.readLine());
-																																						               System.out.printf("¸ŞÀÎ ¸Ş´º·Î µ¹¾Æ°¡½Ã°Ú½À´Ï±î?%c\r\n", Y,N);
-																																							                   Y = (char)System.in.read();
-																																									               N = (char)System.in.read();
-																																										                   break;
-																																												               case 2:
-																																													                       System.out.println("ÁöÃâ³»¿ªÀÔ·ÂÀ» ¼±ÅÃÇÏ¼Ì½À´Ï´Ù.");
-																																															                       System.out.println("±³Åëºñ ÃÑ¾×À» ÀÔ·ÂÇÏ¼¼¿ä : " + ±³Åëºñ);
-																																																	                       ±³Åëºñ = Integer.parseInt(in.readLine());
-																																																			                       System.out.println("½Äºñ ÃÑ¾×À» ÀÔ·ÂÇÏ¼¼¿ä : " + ½Äºñ);
-																																																					                          ½Äºñ= Integer.parseInt(in.readLine());
-																																																								                  System.out.println("±³À°ºñ ÃÑ¾×À» ÀÔ·ÂÇÏ¼¼¿ä : " + ±³À°ºñ);
-																																																										                     ±³À°ºñ = Integer.parseInt(in.readLine());
-																																																												                        System.out.printf("¸ŞÀÎ ¸Ş´º·Î µ¹¾Æ°¡½Ã°Ú½À´Ï±î?%c\r\n", Y,N);
-																																																															             Y = (char)System.in.read();
-																																																																                  N = (char)System.in.read();
-																																																																		                 break;
-																																																																				             case 3:
-																																																																					                     System.out.println("ÃÑ ¼öÀÔ¾× : " + ±İ¾×);
-																																																																							                     ÃÑ¼öÀÔ¾× = Integer.parseInt(in.readLine());
-																																																																									                     System.out.println("ÃÑÁöÃâ¾×: " + ÃÑÁöÃâ¾×);
-																																																																											                     ÃÑÁöÃâ¾× = Integer.parseInt(in.readLine());
-																																																																													                     System.out.println("ÃÑÀÜ¾× : " + ÃÑÀÜ¾×); 
-																																																																															                     ÃÑÀÜ¾× = Integer.parseInt(in.readLine());
-																																																																																	                     System.out.println("±³À°ºñÁöÃâºñÁß : " + ±³Åëºñ/ÃÑÁöÃâ¾×);
-																																																																																			                     ±³À°ºñÁöÃâºñÁß = Integer.parseInt(in.readLine());
-																																																																																					                     System.out.println("½ÄºñÁöÃâºñÁß : " + ½Äºñ/ÃÑÁöÃâ¾×);
-																																																																																							                     ½ÄºñÁöÃâºñÁß = Integer.parseInt(in.readLine());
-																																																																																									                     System.out.println("±³À°ºñÁöÃâºñÁß: " + ±³À°ºñ/ÃÑÁöÃâ¾×);
-																																																																																											                     ±³ÅëºñÁöÃâºñÁß  = Integer.parseInt(in.readLine());
-																																																																																													                     
-																																																																																															                                                                      
-																																																																																																							                                                                  
-																																																																																																															                            
-																																																																																																																		                     break;
-																																																																																																																				                            }
-																																																																																																																							          
-																																																																																																																								             }
-																																																																																																																									                
-																																																																																																																											                 
-																																																																																																																													           
-																																																																																																																														       }
-																																																																																																																														          }
+ public static void main(String[] args)throws IOException {
+    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));  
+    int ìˆ˜ì…ë‚´ì—­ì…ë ¥ = 0, ì§€ì¶œë‚´ì—­ì…ë ¥ = 0, ì •ì‚°ì •ë³´ì¶œë ¥ = 0, ì¢…ë£Œ = 0, ê¸ˆì•¡ = 0, êµí†µë¹„ = 0, ì‹ë¹„ = 0, êµìœ¡ë¹„ = 0, ì´ìˆ˜ì…ì•¡ = 0,ì´ì§€ì¶œì•¡ = 0, ì´ì”ì•¡ = 0;  
+    int êµìœ¡ë¹„ì§€ì¶œë¹„ì¤‘ = 0, êµí†µë¹„ì§€ì¶œë¹„ì¤‘ = 0, ì‹ë¹„ì§€ì¶œë¹„ì¤‘ = 0;
+    char p = 'Y';
+    char Y = 'Y';
+    char N = 'N';
+ int a = 0;
+ 
+                   while(p != 'n'){
+                      System.out.println("ê°€ê³„ë¶€ v 0.4");
+                      System.out.println("1.ìˆ˜ì…ë‚´ì—­ì…ë ¥, 2. ì§€ì¶œë‚´ì—­ì…ë ¥, 3. ì •ì‚°ì •ë³´ì¶œë ¥, 4. ì¢…ë£Œ");
+             System.out.println("ë©”ë‰´ë¥¼ ì„ íƒí•˜ì„¸ìš”.[1,2,3,4]");
+             a = Integer.parseInt(in.readLine());
+                              
+             
+                             
+                           
+            
+           switch(a)
+           {
+         
+            case 1:
+            System.out.println("ìˆ˜ì…ë‚´ì—­ì…ë ¥ì„ ì„ íƒí•˜ì…¨ìŠµë‹ˆë‹¤.");
+            System.out.println("ìˆ˜ì…í•­ëª©ë‚´ì—­ê³¼ ê¸ˆì•¡ì„ ì…ë ¥í•˜ì„¸ìš” : " );
+            ê¸ˆì•¡ = Integer.parseInt(in.readLine());
+            System.out.printf("ë©”ì¸ ë©”ë‰´ë¡œ ëŒì•„ê°€ì‹œê² ìŠµë‹ˆê¹Œ?%c\r\n", Y,N);
+            Y = (char)System.in.read();
+            N = (char)System.in.read();
+            break;
+            case 2:
+                System.out.println("ì§€ì¶œë‚´ì—­ì…ë ¥ì„ ì„ íƒí•˜ì…¨ìŠµë‹ˆë‹¤.");
+                System.out.println("êµí†µë¹„ ì´ì•¡ì„ ì…ë ¥í•˜ì„¸ìš” : " + êµí†µë¹„);
+                êµí†µë¹„ = Integer.parseInt(in.readLine());
+                System.out.println("ì‹ë¹„ ì´ì•¡ì„ ì…ë ¥í•˜ì„¸ìš” : " + ì‹ë¹„);
+                   ì‹ë¹„= Integer.parseInt(in.readLine());
+                System.out.println("êµìœ¡ë¹„ ì´ì•¡ì„ ì…ë ¥í•˜ì„¸ìš” : " + êµìœ¡ë¹„);
+                   êµìœ¡ë¹„ = Integer.parseInt(in.readLine());
+                   System.out.printf("ë©”ì¸ ë©”ë‰´ë¡œ ëŒì•„ê°€ì‹œê² ìŠµë‹ˆê¹Œ?%c\r\n", Y,N);
+             Y = (char)System.in.read();
+             N = (char)System.in.read();
+               break;
+            case 3:
+                System.out.println("ì´ ìˆ˜ì…ì•¡ : " + ê¸ˆì•¡);
+                ì´ìˆ˜ì…ì•¡ = Integer.parseInt(in.readLine());
+                System.out.println("ì´ì§€ì¶œì•¡: " + ì´ì§€ì¶œì•¡);
+                ì´ì§€ì¶œì•¡ = Integer.parseInt(in.readLine());
+                System.out.println("ì´ì”ì•¡ : " + ì´ì”ì•¡); 
+                ì´ì”ì•¡ = Integer.parseInt(in.readLine());
+                System.out.println("êµìœ¡ë¹„ì§€ì¶œë¹„ì¤‘ : " + êµí†µë¹„/ì´ì§€ì¶œì•¡);
+                êµìœ¡ë¹„ì§€ì¶œë¹„ì¤‘ = Integer.parseInt(in.readLine());
+                System.out.println("ì‹ë¹„ì§€ì¶œë¹„ì¤‘ : " + ì‹ë¹„/ì´ì§€ì¶œì•¡);
+                ì‹ë¹„ì§€ì¶œë¹„ì¤‘ = Integer.parseInt(in.readLine());
+                System.out.println("êµìœ¡ë¹„ì§€ì¶œë¹„ì¤‘: " + êµìœ¡ë¹„/ì´ì§€ì¶œì•¡);
+                êµí†µë¹„ì§€ì¶œë¹„ì¤‘  = Integer.parseInt(in.readLine());
+            case 4:
+                System.exit(0);
+                                
+                break;
+                       }
+           }
+    }
+
+   }

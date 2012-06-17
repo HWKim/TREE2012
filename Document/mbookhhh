@@ -1,3 +1,6 @@
+//출처 http://java-school.net/jsp/moneybook.php  
+
+
 create table moneybook (
    no  number,
    item    varchar2(100) NOT NULL,
@@ -12,3 +15,360 @@ increment by 1
 nocache
 nocycle
 /
+
+// ================================   Moneybook.java  ==========================================
+
+package net.java_school.moneybook;
+
+public class Moneybook {
+   private int no;
+	private String item;
+	private int price;
+	private String pdate;
+	
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
+	public String getItem() {
+		return item;
+	}
+	public void setItem(String item) {
+		this.item = item;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public String getPdate() {
+		return pdate;
+	}
+	public void setPdate(String pdate) {
+		this.pdate = pdate;
+	}
+	
+}
+
+// ==========================================   Moneybook.java   =====================================================
+
+package net.java_school.moneybook;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class MoneybookDAO {
+	
+	private static final String URL = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
+	private static final String USER = "scott";
+	private static final String PASSWORD = "tiger";
+	
+	public MoneybookDAO() {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Connection getConnection() throws SQLException {
+		Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+		return con;
+	}
+
+	public ArrayList<Moneybook> getMoneybookList(String startDate,String endDate, String searchWord) {
+		ArrayList<Moneybook> books = new ArrayList<Moneybook>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "SELECT no,item,price,to_char(pdate,'YYYY/MM/DD') pdate " +
+				"FROM moneybook WHERE pdate between to_date(?,'YYYY/MM/DD') AND to_date(?,'YYYY/MM/DD') ";
+		if (searchWord != null && !searchWord.equals("")) {
+			sql = sql + " AND item like ? "; 
+		}
+		sql = sql + " ORDER BY pdate DESC,no DESC";
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, startDate);
+			pstmt.setString(2, endDate);
+			if (searchWord != null && !searchWord.equals("")) {
+				searchWord = "%" + searchWord + "%";
+				pstmt.setString(3, searchWord);
+			}
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Moneybook moneybook = new Moneybook();
+				moneybook.setNo(rs.getInt("no"));
+				moneybook.setItem(rs.getString("item"));
+				moneybook.setPrice(rs.getInt("price"));
+				moneybook.setPdate(rs.getString("pdate"));
+				books.add(moneybook);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(rs, pstmt, con);
+			System.out.println(sql);
+		}
+		return books;
+	}
+
+	public Moneybook getMoneybook(int no) {
+		Moneybook moneybook = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT no,item,price,to_char(pdate,'YYYY/MM/DD') pdate FROM moneybook WHERE no = ?";
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				moneybook = new Moneybook();
+				moneybook.setNo(rs.getInt("no"));
+				moneybook.setItem(rs.getString("item"));
+				moneybook.setPrice(rs.getInt("price"));
+				moneybook.setPdate(rs.getString("pdate"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(rs, pstmt, con);
+		}
+		
+		return moneybook;
+	
+	}
+	
+	public void insert(Moneybook moneybook) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		//순서 item,price,pdate
+		String sql = "INSERT INTO moneybook VALUES (seq_moneybook_no.nextval, ?, ?, to_date(?, 'YYYY/MM/DD') )";
+
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, moneybook.getItem());
+			pstmt.setInt(2, moneybook.getPrice());
+			pstmt.setString(3, moneybook.getPdate());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(null, pstmt, con);
+		}
+	}
+
+	public void update(Moneybook book) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "UPDATE moneybook SET item = ?, price = ?, pdate = to_date(?, 'YYYY/MM/DD')  WHERE no = ?";
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, book.getItem());
+			pstmt.setInt(2, book.getPrice());
+			pstmt.setString(3, book.getPdate());
+			pstmt.setInt(4, book.getNo());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(null, pstmt, con);
+		}
+	}
+	
+	public void delete(int no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = "DELETE FROM moneybook WHERE no = ?";
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println(sql);
+		} finally {
+			close(null, pstmt, con);
+		}
+	}
+	
+	public void close(ResultSet rs, PreparedStatement pstmt, Connection con) {
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (pstmt != null) {
+			try {
+				pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (con != null) {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+}
+
+// ============================================   list.jsp   =====================================================
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="net.java_school.moneybook.*" %>
+<%@ page import="java.util.*" %>    
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%
+	request.setCharacterEncoding("UTF-8");
+	String startDate = request.getParameter("startDate");
+	String endDate = request.getParameter("endDate");
+	String searchWord = request.getParameter("searchWord");
+	
+	if (endDate == null || endDate.equals("")) {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		Integer month = cal.get(Calendar.MONTH) + 1;
+		Integer startDay =cal.getActualMinimum(Calendar.DATE);
+		Integer endDay = cal.getActualMaximum(Calendar.DATE);
+		String monthStr = month.toString();
+		String startDayStr = startDay.toString();
+		String endDayStr = endDay.toString();
+		if (monthStr.length() < 2) {
+			monthStr = "0" + monthStr;
+		}
+		if (startDayStr.length() < 2) {
+			startDayStr = "0" + startDayStr;
+		}
+		if (endDayStr.length() < 2) {
+			endDayStr = "0" + endDayStr;
+		}
+		startDate = year + "/" + monthStr + "/" + startDayStr;
+		endDate = year + "/" + monthStr + "/" + endDayStr;
+	}
+
+	MoneybookDAO dao = new MoneybookDAO();
+	ArrayList<Moneybook> list = dao.getMoneybookList(startDate,endDate,searchWord);
+%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>가계부</title>
+<script type="text/javascript">
+	function goDelete(no) {
+		var check = confirm("정말로 삭제하겠습니까?");
+		if (check) {
+			location.href='delete.jsp?no='+no;
+		}
+	}
+</script>
+</head>
+<body>
+<h1>가계부</h1>
+<h2><%=startDate %> ~ <%=endDate %></h2>
+<table border="1">
+	<tr>
+		<td>날짜</td>
+		<td>사용내역</td>
+		<td>금액</td>
+		<td>관리</td>
+	</tr>
+<%
+int total = 0;
+int size = list.size();
+for(int i=0;i < size;i++) {
+	Moneybook book = list.get(i);
+	total = total + book.getPrice();
+%>	
+	<tr>
+		<td><%=book.getPdate() %></td>
+		<td><%=book.getItem() %></td>
+		<td><%=book.getPrice() %></td>
+		<td>
+			<input type="button" value="수정" onclick="location.href='modify_form.jsp?no=<%=book.getNo() %>'" />
+			<input type="button" value="삭제" onclick="javascript:goDelete('<%=book.getNo() %>')" />
+		</td>
+	</tr>
+<%
+}
+%>
+	<tr>
+		<td colspan="2">합계</td>
+		<td colspan="2"><%=total %></td>
+	</tr>	
+</table>
+<p>
+<input type="button" value="사용내역추가" onclick="location.href='write_form.jsp'" />
+</p>
+<form action="list.jsp" method="post">
+	기간<input type="text" name="startDate" size="10" /> ~ 
+	<input type="text" name="endDate" size="10" />, 검색어
+	<input type="text" name="searchWord" size="12" />
+	<input type="submit" value="검색" />
+</form>
+</body>
+</html>
+
+
+// ===========================================   write_form.jsp   ====================================================
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%
+	Calendar cal = Calendar.getInstance();
+	int year = cal.get(Calendar.YEAR);
+	Integer month = cal.get(Calendar.MONTH) + 1;
+	String monthStr = month.toString();
+	if (monthStr.length() < 2) {
+		monthStr = "0" + monthStr;
+	}
+	int day = cal.get(Calendar.DAY_OF_MONTH);
+	
+	String payDate = year + "/" + monthStr + "/" + day;
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>사용내역 추가</title>
+</head>
+<body>
+<h1>가계부 | 사용내역 추가</h1>
+
+<form action="write.jsp" method="post">
+날짜 : <input type="text" name="pdate" value="<%=payDate %>" />(2012/01/01 형식으로 입력)<br />
+사용내역 : <input type="text" name="item" /><br />
+금액 : <input type="text" name="price" /><br />
+<input type="submit" value="확인" />
+<input type="button" value="취소" onclick="location.href='list.jsp'" />
+</form>
+</body>
+</html>
