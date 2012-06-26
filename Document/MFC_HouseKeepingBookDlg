@@ -1,4 +1,4 @@
-#include "stdafx.h"
+																															#include "stdafx.h"
 #include "HouseKeepingBook.h"
 #include "HouseKeepingBookDlg.h"
 #include "Statistics.h"
@@ -20,64 +20,1050 @@ class CAboutDlg : public CDialog
 public:
 	CAboutDlg();
 
-	// Dialog Data
-		//{{AFX_DATA(CAboutDlg)
-			enum { IDD = IDD_ABOUTBOX };
-				//}}AFX_DATA
+// Dialog Data
+	//{{AFX_DATA(CAboutDlg)
+	enum { IDD = IDD_ABOUTBOX };
+	//}}AFX_DATA
 
-					// ClassWizard generated virtual function overrides
-						//{{AFX_VIRTUAL(CAboutDlg)
-							protected:
-								virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-									//}}AFX_VIRTUAL
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CAboutDlg)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	//}}AFX_VIRTUAL
 
-									// Implementation
-									protected:
-										//{{AFX_MSG(CAboutDlg)
-											//}}AFX_MSG
-												DECLARE_MESSAGE_MAP()
-												};
+// Implementation
+protected:
+	//{{AFX_MSG(CAboutDlg)
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+};
 
-												CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-												{
-													//{{AFX_DATA_INIT(CAboutDlg)
-														//}}AFX_DATA_INIT
-														}
+CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
+{
+	//{{AFX_DATA_INIT(CAboutDlg)
+	//}}AFX_DATA_INIT
+}
 
-														void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-														{
-															CDialog::DoDataExchange(pDX);
-																//{{AFX_DATA_MAP(CAboutDlg)
-																	//}}AFX_DATA_MAP
-																	}
+void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CAboutDlg)
+	//}}AFX_DATA_MAP
+}
 
-																	BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-																		//{{AFX_MSG_MAP(CAboutDlg)
-																				// No message handlers
-																					//}}AFX_MSG_MAP
-																					END_MESSAGE_MAP()
+BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
+	//{{AFX_MSG_MAP(CAboutDlg)
+		// No message handlers
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
 
-																					/////////////////////////////////////////////////////////////////////////////
-																					// CHouseKeepingBookDlg dialog
+/////////////////////////////////////////////////////////////////////////////
+// CHouseKeepingBookDlg dialog
 
-																					CHouseKeepingBookDlg::CHouseKeepingBookDlg(CWnd* pParent /*=NULL*/)
-																						: CDialog(CHouseKeepingBookDlg::IDD, pParent)
-																						{
-																							//{{AFX_DATA_INIT(CHouseKeepingBookDlg)
-																								m_edInMemo = _T("");
-																									m_edInMoney = _T("");
-																										m_edInSort = _T("");
-																											m_edInDate = _T("");
-																												m_edExDate = _T("");
-																													m_edExMemo = _T("");
-																														m_edExMoney = _T("");
-																															m_edExSort = _T("");
-																																m_edTotalIncome = 0;
-																																	m_edTotalExpense = 0;
-																																		m_edRemainMoney = 0;
-																																			//}}AFX_DATA_INIT
-																																				// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
-																																					m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+CHouseKeepingBookDlg::CHouseKeepingBookDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(CHouseKeepingBookDlg::IDD, pParent)
+{
+	//{{AFX_DATA_INIT(CHouseKeepingBookDlg)
+	m_edInMemo = _T("");
+	m_edInMoney = _T("");
+	m_edInSort = _T("");
+	m_edInDate = _T("");
+	m_edExDate = _T("");
+	m_edExMemo = _T("");
+	m_edExMoney = _T("");
+	m_edExSort = _T("");
+	m_edTotalIncome = 0;
+	m_edTotalExpense = 0;
+	m_edRemainMoney = 0;
+	//}}AFX_DATA_INIT
+	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
+	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-																																						m_bCalcul = m_bStatistics = FALSE;
-																																						}
+	m_bCalcul = m_bStatistics = FALSE;
+}
+
+
+void CHouseKeepingBookDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CHouseKeepingBookDlg)
+	DDX_Control(pDX, IDC_EXPENSE_SORT, m_cbExSort);
+	DDX_Control(pDX, IDC_INCOME_SORT, m_cbInSort);
+	DDX_Control(pDX, IDC_INCOME_LIST, m_listIncomeControl);
+	DDX_Control(pDX, IDC_EXPENSE_LIST, m_listExpenseControl);
+	DDX_Text(pDX, IDC_INCOME_MEMO, m_edInMemo);
+	DDX_Text(pDX, IDC_INCOME_MONEY, m_edInMoney);
+	DDX_CBString(pDX, IDC_INCOME_SORT, m_edInSort);
+	DDX_Text(pDX, IDC_INCOME_DATE, m_edInDate);
+	DDX_Text(pDX, IDC_EXPENSE_DATE, m_edExDate);
+	DDX_Text(pDX, IDC_EXPENSE_MEMO, m_edExMemo);
+	DDX_Text(pDX, IDC_EXPENSE_MONEY, m_edExMoney);
+	DDX_CBString(pDX, IDC_EXPENSE_SORT, m_edExSort);
+	DDX_Text(pDX, IDC_TOTAL_INCOME, m_edTotalIncome);
+	DDX_Text(pDX, IDC_TOTAL_EXPENSE, m_edTotalExpense);
+	DDX_Text(pDX, IDC_REMAIN_MONEY, m_edRemainMoney);
+	//}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CHouseKeepingBookDlg, CDialog)
+	//{{AFX_MSG_MAP(CHouseKeepingBookDlg)
+	ON_WM_SYSCOMMAND()
+	ON_WM_PAINT()
+	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON_END, OnButtonEnd)
+	ON_BN_CLICKED(IDC_INCOME_ADD, OnIncomeAdd)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_INCOME_LIST, OnItemchangedIncomeList)
+	ON_BN_CLICKED(IDC_INCOME_MODIFY, OnIncomeModify)
+	ON_BN_CLICKED(IDC_INCOME_DELETE, OnIncomeDelete)
+	ON_BN_CLICKED(IDC_INCOME_REWRITE, OnIncomeRewrite)
+	ON_BN_CLICKED(IDC_EXPENSE_ADD, OnExpenseAdd)
+	ON_BN_CLICKED(IDC_EXPENSE_DELETE, OnExpenseDelete)
+	ON_BN_CLICKED(IDC_EXPENSE_MODIFY, OnExpenseModify)
+	ON_BN_CLICKED(IDC_EXPENSE_REWRITE, OnExpenseRewrite)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_EXPENSE_LIST, OnItemchangedExpenseList)
+	ON_BN_CLICKED(IDC_INCOME_ADD_SORT, OnIncomeAddSort)
+	ON_BN_CLICKED(IDC_INCOME_DEL_SORT, OnIncomeDelSort)
+	ON_BN_CLICKED(IDC_EXPENSE_ADD_SORT, OnExpenseAddSort)
+	ON_BN_CLICKED(IDC_EXPENSE_DEL_SORT, OnExpenseDelSort)
+	ON_WM_CLOSE()
+	ON_BN_CLICKED(IDC_INCOME_CALENDAR, OnIncomeCalendar)
+	ON_BN_CLICKED(IDC_EXPENSE_CALENDAR, OnExpenseCalendar)
+	ON_BN_CLICKED(IDC_BUTTON_CALC, OnButtonCalc)
+	ON_BN_CLICKED(IDC_BUTTON_STATISTICS, OnButtonStatistics)
+	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_BUTTON_OPEN, OnBnClickedButtonOpen)
+	ON_BN_CLICKED(IDC_BUTTON_SAVE, OnBnClickedButtonSave)
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CHouseKeepingBookDlg message handlers
+
+
+
+BOOL CHouseKeepingBookDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	// Add "About..." menu item to system menu.
+
+	// IDM_ABOUTBOX must be in the system command range.
+	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+	ASSERT(IDM_ABOUTBOX < 0xF000);
+
+	CMenu* pSysMenu = GetSystemMenu(FALSE);
+	if (pSysMenu != NULL)
+	{
+		CString strAboutMenu;
+		strAboutMenu.LoadString(IDS_ABOUTBOX);
+		if (!strAboutMenu.IsEmpty())
+		{
+			pSysMenu->AppendMenu(MF_SEPARATOR);
+			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
+		}
+	}
+
+	// Set the icon for this dialog.  The framework does this automatically
+	//  when the application's main window is not a dialog
+	SetIcon(m_hIcon, TRUE);			// Set big icon
+	SetIcon(m_hIcon, FALSE);		// Set small icon
+	
+	// TODO: Add extra initialization here
+	// List Control의 스타일 변경
+	LV_COLUMN lvColumn;
+	char* list[4] = {"날짜", "분류", "메모", "금액"};
+	int nWidth[4] = {70, 80, 91, 70};
+
+	// List Control의 칼럼을 설정한다.
+	for(int i = 0; i < 4 ; i++)
+	{
+		lvColumn.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
+		lvColumn.fmt = LVCFMT_LEFT;
+		lvColumn.pszText = list[i];
+		lvColumn.iSubItem = i;
+		lvColumn.cx = nWidth[i];
+		m_listIncomeControl.InsertColumn(i, &lvColumn);
+		m_listExpenseControl.InsertColumn(i, &lvColumn);
+	}
+
+	// List Control 스타일 변경 부분.
+	m_listIncomeControl.SetExtendedStyle(m_listIncomeControl.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	m_listExpenseControl.SetExtendedStyle(m_listExpenseControl.GetExtendedStyle() | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+	
+	// 수입 내역의 수정/삭제 버튼을 비활성화 시킨다.
+	((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(FALSE);
+	((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(FALSE);
+
+	// 지출 내역의 수정/삭제 버튼을 비활성화 시킨다.
+	((CButton*) GetDlgItem(IDC_EXPENSE_MODIFY))->EnableWindow(FALSE);
+	((CButton*) GetDlgItem(IDC_EXPENSE_DELETE))->EnableWindow(FALSE);
+	
+	return TRUE;  // return TRUE  unless you set the focus to a control
+}
+
+
+void CHouseKeepingBookDlg::OnSysCommand(UINT nID, LPARAM lParam)
+{
+	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+	{
+		CAboutDlg dlgAbout;
+		dlgAbout.DoModal();
+	}
+	else
+	{
+		CDialog::OnSysCommand(nID, lParam);
+	}
+}
+
+// If you add a minimize button to your dialog, you will need the code below
+//  to draw the icon.  For MFC applications using the document/view model,
+//  this is automatically done for you by the framework.
+
+void CHouseKeepingBookDlg::OnPaint() 
+{
+	if (IsIconic())
+	{
+		CPaintDC dc(this); // device context for painting
+
+		SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+
+		// Center icon in client rectangle
+		int cxIcon = GetSystemMetrics(SM_CXICON);
+		int cyIcon = GetSystemMetrics(SM_CYICON);
+		CRect rect;
+		GetClientRect(&rect);
+		int x = (rect.Width() - cxIcon + 1) / 2;
+		int y = (rect.Height() - cyIcon + 1) / 2;
+
+		// Draw the icon
+		dc.DrawIcon(x, y, m_hIcon);
+	}
+	else
+	{
+		CDialog::OnPaint();
+	}
+}
+
+// The system calls this to obtain the cursor to display while the user drags
+//  the minimized window.
+HCURSOR CHouseKeepingBookDlg::OnQueryDragIcon()
+{
+	return (HCURSOR) m_hIcon;
+}
+
+void CHouseKeepingBookDlg::OnButtonEnd() 
+{
+	// TODO: Add your control notification handler code here
+	// 끝내기 버튼의 구현부분, 클릭시 다시 한번 더 확인함.
+	if(MessageBox("정말 종료하시겠습니까?", "경고!", MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
+		OnCancel();
+}
+
+void CHouseKeepingBookDlg::OnIncomeAdd() 
+{
+	// TODO: Add your control notification handler code here
+	int nCount = m_listIncomeControl.GetItemCount();
+
+	LV_ITEM lvItem;
+
+	UpdateData(TRUE);
+
+	// 모든 항목이 String으로 채워져 있는가를 우선 검색
+	if(!m_edInDate.IsEmpty() && !m_edInSort.IsEmpty() && !m_edInMemo.IsEmpty() && !m_edInMoney.IsEmpty())
+	{
+		// 날짜 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 0;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edInDate;
+		m_listIncomeControl.InsertItem(&lvItem);
+
+		// 분류 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 1;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edInSort;
+		m_listIncomeControl.SetItem(&lvItem);
+
+		// 메모 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 2;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edInMemo;
+		m_listIncomeControl.SetItem(&lvItem);
+		
+		// 금액 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 3;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edInMoney;
+		m_listIncomeControl.SetItem(&lvItem);
+
+		// 입력 후 각 항목의 EditBox내용 초기화
+		m_edInDate.Empty();
+		m_edInSort.Empty();
+		m_edInMemo.Empty();
+		m_edInMoney.Empty();
+
+		((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(FALSE);
+		((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(FALSE);
+
+		// 입력사항을 결산부분에 반영
+		TotalIncome();
+		RemainMoney();
+		UpdateData(FALSE);
+	}
+	else
+		// 하나의 항목이라도 입력이 안되었을 경우 에러메시지 출력
+		MessageBox("모든 항목을 입력해 주세요.", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnItemchangedIncomeList(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+	// TODO: Add your control notification handler code here
+	// ListControl에서 선택된 내용을 멤버 변수에 저장
+	m_nInSelectedItem = pNMListView->iItem;
+
+	m_edInDate = m_listIncomeControl.GetItemText(m_nInSelectedItem, 0);
+	m_edInSort = m_listIncomeControl.GetItemText(m_nInSelectedItem, 1);
+	m_edInMemo = m_listIncomeControl.GetItemText(m_nInSelectedItem, 2);
+	m_edInMoney= m_listIncomeControl.GetItemText(m_nInSelectedItem, 3);
+
+	((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(TRUE);
+	((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(TRUE);
+
+	TotalIncome();
+	RemainMoney();
+	UpdateData(FALSE);
+
+	*pResult = 0;
+}
+
+void CHouseKeepingBookDlg::OnIncomeModify() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	CString strDate, strSort, strMemo, strMoney;
+	strDate = m_edInDate;
+	strSort = m_edInSort;
+	strMemo = m_edInMemo;
+	strMoney= m_edInMoney;
+
+	// ListControl에서 선택된 항목이 있을경우 다음의 코드를 실행
+	if(m_nInSelectedItem >= 0)
+	{
+		if(!m_edInDate.IsEmpty() && !m_edInSort.IsEmpty() && !m_edInMemo.IsEmpty() && !m_edInMoney.IsEmpty())
+		{
+			LV_ITEM lvItem;
+			CString strIndex;
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nInSelectedItem;
+			lvItem.iSubItem = 0;
+			lvItem.pszText = (LPSTR)(LPCSTR)strDate;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nInSelectedItem;
+			lvItem.iSubItem = 1;
+			lvItem.pszText = (LPSTR)(LPCSTR)strSort;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nInSelectedItem;
+			lvItem.iSubItem = 2;
+			lvItem.pszText = (LPSTR)(LPCSTR)strMemo;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nInSelectedItem;
+			lvItem.iSubItem = 3;
+			lvItem.pszText = (LPSTR)(LPCSTR)strMoney;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			m_edInDate.Empty();
+			m_edInSort.Empty();
+			m_edInMemo.Empty();
+			m_edInMoney.Empty();
+
+			((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(FALSE);
+			((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(FALSE);
+
+			// 입력사항을 결산부분에 반영
+			TotalIncome();
+			RemainMoney();
+			UpdateData(FALSE);
+		}
+		else
+			MessageBox("모든 항목을 입력해 주세요.", "잠깐!!", MB_OK);
+	}
+	else
+		MessageBox("아이템을 선택하지 않았습니다.", "잠깐!!", MB_OK);
+}
+
+
+void CHouseKeepingBookDlg::OnIncomeDelete() 
+{
+	// TODO: Add your control notification handler code here
+	// ListControl에서 선택된 항목이 있을경우 다음의 코드를 실행
+	if(m_nInSelectedItem >= 0)
+	{
+		// 선택된 리스트 항목을 삭제
+		m_listIncomeControl.DeleteItem(m_nInSelectedItem);
+
+		m_edInDate.Empty();
+		m_edInSort.Empty();
+		m_edInMemo.Empty();
+		m_edInMoney.Empty();
+
+		((CButton*) GetDlgItem(IDC_INCOME_MODIFY))->EnableWindow(FALSE);
+		((CButton*) GetDlgItem(IDC_INCOME_DELETE))->EnableWindow(FALSE);
+
+		// 입력사항을 결산부분에 반영
+		TotalIncome();
+		RemainMoney();
+		UpdateData(FALSE);
+	}
+	else
+		MessageBox("아이템을 선택하지 않았습니다.", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnIncomeRewrite() 
+{
+	// TODO: Add your control notification handler code here
+	m_edInDate.Empty();
+	m_edInSort.Empty();
+	m_edInMemo.Empty();
+	m_edInMoney.Empty();
+
+	// 입력사항을 결산부분에 반영
+	TotalIncome();
+	RemainMoney();
+	UpdateData(FALSE);
+}
+
+void CHouseKeepingBookDlg::OnExpenseAdd() 
+{
+	// TODO: Add your control notification handler code here
+	int nCount = m_listExpenseControl.GetItemCount();
+
+	LV_ITEM lvItem;
+
+	UpdateData(TRUE);
+
+	// 모든 항목이 String으로 채워져 있는가를 우선 검색
+	if(!m_edExDate.IsEmpty() && !m_edExSort.IsEmpty() && !m_edExMemo.IsEmpty() && !m_edExMoney.IsEmpty())
+	{
+		// 날짜 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 0;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edExDate;
+		m_listExpenseControl.InsertItem(&lvItem);
+
+		// 분류 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 1;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edExSort;
+		m_listExpenseControl.SetItem(&lvItem);
+
+		// 메모 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 2;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edExMemo;
+		m_listExpenseControl.SetItem(&lvItem);
+		
+		// 금액 부분의 입력사항을 ListControl에 추가
+		lvItem.mask = LVIF_TEXT;
+		lvItem.iItem = nCount;
+		lvItem.iSubItem = 3;
+		lvItem.pszText = (LPSTR)(LPCSTR)m_edExMoney;
+		m_listExpenseControl.SetItem(&lvItem);
+
+		// 입력 후 각 항목의 EditBox내용 초기화
+		m_edExDate.Empty();
+		m_edExSort.Empty();
+		m_edExMemo.Empty();
+		m_edExMoney.Empty();
+
+		((CButton*) GetDlgItem(IDC_EXPENSE_MODIFY))->EnableWindow(FALSE);
+		((CButton*) GetDlgItem(IDC_EXPENSE_DELETE))->EnableWindow(FALSE);
+
+		// 입력사항을 결산부분에 반영
+		TotalExpense();
+		RemainMoney();
+		UpdateData(FALSE);
+	}
+	else
+		// 하나의 항목이라도 입력이 안되었을 경우 에러메시지 출력
+		MessageBox("모든 항목을 입력해 주세요.", "잠깐!!", MB_OK);
+}
+
+
+void CHouseKeepingBookDlg::OnExpenseModify() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+	CString strDate, strSort, strMemo, strMoney;
+	strDate = m_edExDate;
+	strSort = m_edExSort;
+	strMemo = m_edExMemo;
+	strMoney= m_edExMoney;
+
+	// ListControl에서 선택된 항목이 있을경우 다음의 코드를 실행
+	if(m_nExSelectedItem >= 0)
+	{
+		if(!m_edExDate.IsEmpty() && !m_edExSort.IsEmpty() && !m_edExMemo.IsEmpty() && !m_edExMoney.IsEmpty())
+		{
+			LV_ITEM lvItem;
+			CString strIndex;
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nExSelectedItem;
+			lvItem.iSubItem = 0;
+			lvItem.pszText = (LPSTR)(LPCSTR)strDate;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nExSelectedItem;
+			lvItem.iSubItem = 1;
+			lvItem.pszText = (LPSTR)(LPCSTR)strSort;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nExSelectedItem;
+			lvItem.iSubItem = 2;
+			lvItem.pszText = (LPSTR)(LPCSTR)strMemo;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = m_nExSelectedItem;
+			lvItem.iSubItem = 3;
+			lvItem.pszText = (LPSTR)(LPCSTR)strMoney;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			m_edExDate.Empty();
+			m_edExSort.Empty();
+			m_edExMemo.Empty();
+			m_edExMoney.Empty();
+
+			((CButton*) GetDlgItem(IDC_EXPENSE_MODIFY))->EnableWindow(FALSE);
+			((CButton*) GetDlgItem(IDC_EXPENSE_DELETE))->EnableWindow(FALSE);
+
+			// 입력사항을 결산부분에 반영
+			TotalExpense();
+			RemainMoney();
+			UpdateData(FALSE);
+		}
+		else
+			MessageBox("모든 항목을 입력해 주세요.", "잠깐!!", MB_OK);
+	}
+	else
+		MessageBox("아이템을 선택하지 않았습니다.", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnExpenseDelete() 
+{
+	// TODO: Add your control notification handler code here
+	if(m_nExSelectedItem >= 0)
+	{
+		// 선택된 리스트 항목을 삭제
+		m_listExpenseControl.DeleteItem(m_nExSelectedItem);
+
+		m_edInDate.Empty();
+		m_edInSort.Empty();
+		m_edInMemo.Empty();
+		m_edInMoney.Empty();
+
+		((CButton*) GetDlgItem(IDC_EXPENSE_MODIFY))->EnableWindow(FALSE);
+		((CButton*) GetDlgItem(IDC_EXPENSE_DELETE))->EnableWindow(FALSE);
+
+		// 입력사항을 결산부분에 반영
+		TotalExpense();
+		RemainMoney();
+		UpdateData(FALSE);
+	}
+	else
+		MessageBox("아이템을 선택하지 않았습니다.", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnExpenseRewrite() 
+{
+	// TODO: Add your control notification handler code here
+	m_edExDate.Empty();
+	m_edExSort.Empty();
+	m_edExMemo.Empty();
+	m_edExMoney.Empty();
+
+	// 입력사항을 결산부분에 반영
+	TotalExpense();
+	RemainMoney();
+	UpdateData(FALSE);
+}
+
+
+void CHouseKeepingBookDlg::OnItemchangedExpenseList(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+	// TODO: Add your control notification handler code here
+	// ListControl에서 선택된 내용을 멤버 변수에 저장
+	m_nExSelectedItem = pNMListView->iItem;
+
+	m_edExDate = m_listExpenseControl.GetItemText(m_nExSelectedItem, 0);
+	m_edExSort = m_listExpenseControl.GetItemText(m_nExSelectedItem, 1);
+	m_edExMemo = m_listExpenseControl.GetItemText(m_nExSelectedItem, 2);
+	m_edExMoney= m_listExpenseControl.GetItemText(m_nExSelectedItem, 3);
+
+	((CButton*) GetDlgItem(IDC_EXPENSE_MODIFY))->EnableWindow(TRUE);
+	((CButton*) GetDlgItem(IDC_EXPENSE_DELETE))->EnableWindow(TRUE);
+
+	TotalExpense();
+	RemainMoney();
+	UpdateData(FALSE);
+
+	*pResult = 0;
+}
+
+void CHouseKeepingBookDlg::OnIncomeAddSort() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+
+	// 사용자가 입력한 값이 비어있지 않았을 때 추가버튼을 눌렀을 경우 아래 문장을 처리
+	// if(m_edInSort.GetLength() == 0) return;
+	if(!m_edInSort.IsEmpty())
+	{
+		// 콤보박스 내에서 사용자가 입력한 값의 문자열을 검색해서 해당 값이 없으면,
+		// CComboBoxMemberVariables.findstring(검색 시작값, 사용자 입력값);
+		if(m_cbInSort.FindString(0, m_edInSort) == -1)
+		{
+			// 콤보박스 리스트에 문자열을 추가한다.
+			m_cbInSort.AddString(m_edInSort);
+			m_edInSort.Empty();
+			UpdateData(FALSE);
+		}
+		else
+			MessageBox("이미 존재하는 항목입니다!", "잠깐!!", MB_OK);
+	}
+	else
+		MessageBox("문자열을 입력해 주세요!!!", "잠깐!!", MB_OK);
+
+	UpdateData(FALSE);
+}
+
+void CHouseKeepingBookDlg::OnIncomeDelSort() 
+{
+	// TODO: Add your control notification handler code here
+	if(m_cbInSort.GetCurSel() >= 0)
+	{
+		m_cbInSort.DeleteString(m_cbInSort.GetCurSel());
+		m_edInSort.Empty();
+	}
+	else
+		MessageBox("삭제할 항목을 선택해 주세요!!!", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnExpenseAddSort() 
+{
+	// TODO: Add your control notification handler code here
+	UpdateData(TRUE);
+
+	// 사용자가 입력한 값이 비어있지 않았을 때 추가버튼을 눌렀을 경우 아래 문장을 처리
+	// if(m_edExSort.GetLength() == 0) return;
+	if(!m_edExSort.IsEmpty())
+	{
+		// 콤보박스 내에서 사용자가 입력한 값의 문자열을 검색해서 해당 값이 없으면,
+		// CComboBoxMemberVariables.findstring(검색 시작값, 사용자 입력값);
+		if(m_cbExSort.FindString(0, m_edExSort) == -1)
+		{
+			// 콤보박스 리스트에 문자열을 추가한다.
+			m_cbExSort.AddString(m_edExSort);
+			m_edExSort.Empty();
+			UpdateData(FALSE);
+		}
+		else
+			MessageBox("이미 존재하는 항목입니다!", "잠깐!!", MB_OK);
+	}
+	else
+		MessageBox("문자열을 입력해 주세요!!!", "잠깐!!", MB_OK);
+
+	UpdateData(FALSE);
+}
+
+
+void CHouseKeepingBookDlg::OnExpenseDelSort() 
+{
+	// TODO: Add your control notification handler code here
+	if(m_cbExSort.GetCurSel() >= 0)
+	{
+		m_cbExSort.DeleteString(m_cbExSort.GetCurSel());
+		m_edExSort.Empty();
+	}
+	else
+		MessageBox("삭제할 항목을 선택해 주세요!!!", "잠깐!!", MB_OK);
+}
+
+void CHouseKeepingBookDlg::OnClose() 
+{
+	// TODO: Add your message handler code here and/or call default
+	// 윈도우 상단의 X버튼의 구현부분, 클릭시 다시 한번 더 확인함.
+	if(MessageBox("정말 종료하시겠습니까?", "경고!", MB_ICONQUESTION | MB_OKCANCEL) == IDOK)
+		CDialog::OnClose();
+}
+
+
+BOOL CHouseKeepingBookDlg::PreTranslateMessage(MSG *pMsg)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	// esc, enter키를 눌러도 창이 종료되지 않도록 지정
+	if(pMsg->message == WM_KEYDOWN)
+	{
+		if(pMsg->wParam == VK_ESCAPE) return TRUE;
+		if(pMsg->wParam == VK_RETURN) return TRUE;
+	}       
+
+	return CDialog::PreTranslateMessage(pMsg);
+}
+
+void CHouseKeepingBookDlg::OnIncomeCalendar() 
+{
+	// TODO: Add your control notification handler code here
+	// 현재 날짜를 Today변수에 저장
+	CString Today;
+	CTime today = CTime::GetCurrentTime();
+
+	if(today.GetMonth() >= 10)
+		Today.Format("%d-%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+	else
+		Today.Format("%d-0%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+
+	if(today.GetDay() >= 10)
+		Today.Format("%d-%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+	else
+		Today.Format("%d-0%d-0%d", today.GetYear(), today.GetMonth(), today.GetDay());
+
+	// 날짜에 해당하는 EditBox에 오늘 날짜를 넣는다.
+	m_edInDate = Today;
+	// 변수에 있는 값을 컨트롤의 화면에 나타내기 위한 UpdateData(FALSE)선언
+	UpdateData(FALSE);
+}
+
+void CHouseKeepingBookDlg::OnExpenseCalendar() 
+{
+	// TODO: Add your control notification handler code here
+	// 현재 날짜를 Today변수에 저장
+	CString Today;
+	CTime today = CTime::GetCurrentTime();
+
+	if(today.GetMonth() >= 10)
+		Today.Format("%d-%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+	else
+		Today.Format("%d-0%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+
+	if(today.GetDay() >= 10)
+		Today.Format("%d-%d-%d", today.GetYear(), today.GetMonth(), today.GetDay());
+	else
+		Today.Format("%d-0%d-0%d", today.GetYear(), today.GetMonth(), today.GetDay());
+
+	// 날짜에 해당하는 EditBox에 오늘 날짜를 넣는다.
+	m_edExDate = Today;
+	// 변수에 있는 값을 컨트롤의 화면에 나타내기 위한 UpdateData(FALSE)선언
+	UpdateData(FALSE);
+}
+
+void CHouseKeepingBookDlg::TotalIncome()
+{
+	m_TotalInSum = 0;
+
+	// 수입부분의 리스트 개수를 카운트한다.
+	for(int i = 0 ; i < m_listIncomeControl.GetItemCount() ; i++)
+	{
+		// 4번째 칼럼 값을 읽어온다.
+		CString str = m_listIncomeControl.GetItemText(i, 3);
+		// 읽어온 값을 정수형으로 변환하여 그 합계를 구함
+		m_TotalInSum += atoi(str);
+	}
+	// 출력 부분
+	m_edTotalIncome = m_TotalInSum;
+}
+
+void CHouseKeepingBookDlg::TotalExpense()
+{
+	m_TotalExSum = 0;
+
+	// 지출부분의 리스트 개수를 카운트한다.
+	for(int i = 0 ; i < m_listExpenseControl.GetItemCount() ; i++)
+	{
+		// 4번째 칼럼 값을 읽어온다.
+		CString str= m_listExpenseControl.GetItemText(i, 3);
+		// 읽어온 값을 정수형으로 변환하여 그 합계를 구함
+		m_TotalExSum += atoi(str);
+	}
+	// 출력 부분
+	m_edTotalExpense = m_TotalExSum;
+}
+
+void CHouseKeepingBookDlg::RemainMoney()
+{
+	TotalIncome();
+	TotalExpense();
+
+	int RemainMoney = 0;
+	RemainMoney = m_TotalInSum - m_TotalExSum;
+
+	m_edRemainMoney = RemainMoney;
+
+}
+
+
+void CHouseKeepingBookDlg::OnButtonCalc() 
+{
+	// TODO: Add your control notification handler code here
+	if(!m_bCalcul)
+	{
+		m_dlgCalcul.Create(IDD_CALCULATOR, this);
+		CRect rectCalulator, rectCalculatorTable;
+		GetWindowRect(&rectCalulator);
+		m_dlgCalcul.GetWindowRect(&rectCalculatorTable);
+		m_dlgCalcul.MoveWindow(rectCalulator.right, rectCalulator.top, rectCalculatorTable.Width(), rectCalculatorTable.Height());
+		m_dlgCalcul.ShowWindow(SW_SHOW);
+		m_bCalcul = TRUE;
+	}
+	else
+	{
+		if(m_dlgCalcul.IsWindowVisible())
+		{
+			// 코드 테이블의 대화상자를 감춘다.
+			m_dlgCalcul.ShowWindow(SW_HIDE);
+   
+			// 코드 테이블 대화상자를 없앤다.
+			m_dlgCalcul.DestroyWindow();
+			m_bCalcul = FALSE;
+		}
+		else
+		{
+			m_dlgCalcul.ShowWindow(SW_SHOW);
+			m_bCalcul = TRUE;
+		}
+	}
+}
+
+void CHouseKeepingBookDlg::OnButtonStatistics() 
+{
+	// TODO: Add your control notification handler code here
+	CStatistics statDlg;
+	statDlg.DoModal();
+/*
+	if(!m_bStatistics)
+	{
+		m_dlgStatistics.Create(IDD_STATISTICS_DIALOG, this);
+		CRect rectStatistics, rectStatisticsTable;
+		GetWindowRect(&rectStatistics);
+		m_dlgStatistics.GetWindowRect(&rectStatisticsTable);
+		m_dlgStatistics.ShowWindow(SW_SHOW);
+		m_bStatistics = TRUE;
+	}
+	else
+	{
+		if(m_dlgStatistics.IsWindowVisible())
+		{
+			// 코드 테이블의 대화상자를 감춘다.
+			m_dlgStatistics.ShowWindow(SW_HIDE);
+   
+			// 코드 테이블 대화상자를 없앤다.
+			m_dlgStatistics.DestroyWindow();
+			m_bStatistics = FALSE;
+		}
+		else
+		{
+			m_dlgStatistics.ShowWindow(SW_SHOW);
+			m_bStatistics = TRUE;
+		}
+	}
+*/
+}
+
+void CHouseKeepingBookDlg::OnBnClickedButtonOpen()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	char Date[256];
+	char Category[256];
+	char Memo[256];
+	char Money[256];
+	int nCount;
+	
+	LV_ITEM lvItem;
+	
+	m_listExpenseControl.DeleteAllItems();
+	m_listIncomeControl.DeleteAllItems();
+	
+	
+	char Filter[] = "TXT File(*.txt) |*.txt| 모든파일(*.*) |*.*|";
+	CFileDialog pDlg(TRUE, "TXT File(*.txt)", "*.txt", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, Filter, NULL);
+
+	// 저장 창을 Modal()로 띄움
+	if(pDlg.DoModal() == IDOK)
+	{
+		FILE *fp;
+		// 읽기 모드
+		fp = fopen(pDlg.GetPathName(), "r");
+		
+		fscanf(fp, "%d", &nCount);
+		// 수입부분 리스트컨트롤의 아이템들을 읽어들인 후,
+		for(int i = 0 ; i < nCount ; i++)
+		{
+			int nCount = m_listIncomeControl.GetItemCount();
+			// 리스트컨트롤의 각 칼럼에 해당 값을 출력
+			fscanf(fp, "%s", Date);
+			fscanf(fp, "%s", Category);
+			fscanf(fp, "%s", Memo);
+			fscanf(fp, "%s", Money);
+
+			// 날짜 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 0;
+			lvItem.pszText = Date;
+			m_listIncomeControl.InsertItem(&lvItem);
+
+			// 분류 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 1;
+			lvItem.pszText = Category;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			// 메모 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 2;
+			lvItem.pszText = Memo;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			// 금액 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 3;
+			lvItem.pszText = Money;
+			m_listIncomeControl.SetItem(&lvItem);
+
+			UpdateData(FALSE);
+		}
+
+		fscanf(fp, "%d", &nCount);
+		// 지출부분 리스트컨트롤의 아이템들을 읽어들인 후,
+		for(int j = 0 ; j < nCount ; j++)
+		{
+			int nCount = m_listExpenseControl.GetItemCount();
+			// 리스트컨트롤의 각 칼럼에 해당 값을 출력
+			fscanf(fp, "%s", Date);
+			fscanf(fp, "%s", Category);
+			fscanf(fp, "%s", Memo);
+			fscanf(fp, "%s", Money);
+			
+			// 날짜 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 0;
+			lvItem.pszText = Date;
+			m_listExpenseControl.InsertItem(&lvItem);
+
+			
+			// 분류 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 1;
+			lvItem.pszText = Category;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			
+			// 메모 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 2;
+			lvItem.pszText = Memo;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			
+			// 금액 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 3;
+			lvItem.pszText = Money;
+			m_listExpenseControl.SetItem(&lvItem);
+
+			UpdateData(FALSE);
+		}
+		// 총 수입과 지출, 잔여금을 다시 계산한다.
+		TotalIncome();
+		TotalExpense();
+		RemainMoney();
+
+		UpdateData(FALSE);
+		fclose(fp);
+	}
+}
+
+
+void CHouseKeepingBookDlg::OnBnClickedButtonSave()
+{
+	// TODO: Add your control notification handler code here
+	// 파일 저장형식 설정
+	char Filter[] = "TXT File(*.txt) |*.txt| 모든파일(*.*) |*.*|";
+	CFileDialog pDlg(FALSE, "TXT File(*.txt)", "UserData", OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, Filter, NULL);
+
+	CString Date;
+	CString Category;
+	CString Memo;
+	CString Money;
+
+
+	// 저장 창을 Modal()로 띄움
+	if(pDlg.DoModal() == IDOK)
+	{
+		FILE *fp;
+		// 쓰기 모드
+		fp = fopen(pDlg.GetPathName(), "w");
+
+		fprintf(fp, "%d\n", m_listIncomeControl.GetItemCount());
+
+		// 수입부분 리스트컨트롤의 아이템들을 읽어들인 후,
+		for(int i = 0 ; i < m_listIncomeControl.GetItemCount() ; i++)
+		{
+			// 각 변수에 0 ~ 3까지의 칼럼값을 저장
+			Date = m_listIncomeControl.GetItemText(i, 0);
+			Category = m_listIncomeControl.GetItemText(i, 1);
+			Memo = m_listIncomeControl.GetItemText(i, 2);
+			Money = m_listIncomeControl.GetItemText(i, 3);
+
+			// 파일에 저장
+			fprintf(fp, "%s\t", Date);
+			fprintf(fp, "%s\t", Category);
+			fprintf(fp, "%s\t", Memo);
+			fprintf(fp, "%s\t", Money);
+			fprintf(fp, "\n");
+		}
+
+		fprintf(fp, "%d\n", m_listExpenseControl.GetItemCount());
+		// 지출부분 리스트 컨트롤의 아이템들을 읽어들인 후,
+		for(int j = 0 ; j < m_listExpenseControl.GetItemCount() ; j++)
+		{
+			Date = m_listExpenseControl.GetItemText(j, 0);
+			Category = m_listExpenseControl.GetItemText(j, 1);
+			Memo = m_listExpenseControl.GetItemText(j, 2);
+			Money = m_listExpenseControl.GetItemText(j, 3);
+
+			fprintf(fp, "%s\t", Date);
+			fprintf(fp, "%s\t", Category);
+			fprintf(fp, "%s\t", Memo);
+			fprintf(fp, "%s\t", Money);
+			fprintf(fp, "\n");
+		}
+
+		// 파일포인터 반환
+		fclose(fp);
+
+	}
+}

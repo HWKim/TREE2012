@@ -15,78 +15,370 @@ static char THIS_FILE[] = __FILE__;
 
 CStatistics::CStatistics(CWnd* pParent /*=NULL*/)
 	: CDialog(CStatistics::IDD, pParent)
+{
+	//{{AFX_DATA_INIT(CStatistics)
+	m_edStartPoint = _T("");
+	m_edEndPoint = _T("");
+	//}}AFX_DATA_INIT
+}
+
+
+void CStatistics::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CStatistics)
+	DDX_Control(pDX, IDC_EXPENSE_STATISTICS, m_listExpense);
+	DDX_Control(pDX, IDC_INCOME_STATISTICS, m_listIncome);
+	DDX_Text(pDX, IDC_SEARCH_START_POINT, m_edStartPoint);
+	DDX_Text(pDX, IDC_SEARCH_END_POINT, m_edEndPoint);
+	//}}AFX_DATA_MAP
+}
+
+
+BEGIN_MESSAGE_MAP(CStatistics, CDialog)
+	//{{AFX_MSG_MAP(CStatistics)
+	ON_BN_CLICKED(IDC_BUTTON_SEARCH, OnButtonSearch)
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CStatistics message handlers
+
+BOOL CStatistics::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	
+	// TODO: Add extra initialization here
+	LV_COLUMN lvColumn;
+	char* list[3] = {"분류", "총 금액", "점유율"};
+	int nWidth[3] = {95, 80, 71};
+
+	// List Control의 칼럼을 설정한다.
+	for(int i = 0 ; i < 4 ; i++)
 	{
-		//{{AFX_DATA_INIT(CStatistics)
-			m_edStartPoint = _T("");
-				m_edEndPoint = _T("");
-					//}}AFX_DATA_INIT
-					}
+		lvColumn.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
+		lvColumn.fmt = LVCFMT_LEFT;
+		lvColumn.pszText = list[i];
+		lvColumn.iSubItem = i;
+		lvColumn.cx = nWidth[i];
+		m_listIncome.InsertColumn(i, &lvColumn);
+		m_listExpense.InsertColumn(i, &lvColumn);
+	}
+
+	// List Control의 스타일 변경(그리드 라인 추가)
+	m_listIncome.SetExtendedStyle(m_listIncome.GetExtendedStyle() | LVS_EX_GRIDLINES);
+	m_listExpense.SetExtendedStyle(m_listExpense.GetExtendedStyle() | LVS_EX_GRIDLINES);
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CStatistics::OnButtonSearch() 
+{
+	// TODO: Add your control notification handler code here
+	// 모든 항목이 입력되지 않았거나,
+	UpdateData();
+	if(!m_edStartPoint.IsEmpty() && !m_edEndPoint.IsEmpty())
+	{
+		// 입력형식이 맞지 않을경우 else문의 에러문장을 출력
+		if(m_edStartPoint.GetLength() == 10 && m_edEndPoint.GetLength() == 10)
+		{
+			IncomeSearch();
+		}
+	}
+	else
+		MessageBox("형식이 잘못되었거나 모든 항목이 입력되지 않았습니다.\n입력 예) 2005-01-01 혹은 2005-10-24", "경고!", MB_OK);
+	
+}
 
 
-					void CStatistics::DoDataExchange(CDataExchange* pDX)
+void CStatistics::IncomeSearch()
+{
+	// 사용자가 입력한 시작일과 종료일을 각각 정수형으로 변환하여 저장
+	CHouseKeepingBookDlg* pMainDlg = (CHouseKeepingBookDlg*)AfxGetApp()->m_pMainWnd;
+	int cur = 0;
+/*	CString str = m_edStartPoint.Tokenize("-", cur);
+	m_nStartYear = atoi(str.GetBuffer(0));
+	str = m_edStartPoint.Tokenize("-", cur);
+	m_nStartMonth = atoi(str.GetBuffer(0));
+	str = m_edStartPoint.Tokenize("-", cur);
+	m_nStartDay = atoi(str.GetBuffer(0));
+
+	cur = 0;
+	str = m_edEndPoint.Tokenize("-", cur);
+	m_nEndYear = atoi(str.GetBuffer(0));
+	str = m_edEndPoint.Tokenize("-", cur);
+	m_nEndMonth = atoi(str.GetBuffer(0));
+	str = m_edEndPoint.Tokenize("-", cur);
+	m_nEndDay = atoi(str.GetBuffer(0));
+*/	
+	char str[20], *tok;
+	strcpy(str, m_edStartPoint.GetBuffer(m_edStartPoint.GetLength()));
+
+	tok = strtok(str, "-");
+	m_nStartYear = atoi(tok);
+	tok = strtok(NULL, "-");
+	m_nStartMonth = atoi(tok);
+	tok = strtok(NULL, "-");
+	m_nStartDay = atoi(tok);
+
+	strcpy(str, m_edEndPoint.GetBuffer(m_edEndPoint.GetLength()));
+
+	tok = strtok(str, "-");
+	m_nEndYear = atoi(tok);
+	tok = strtok(NULL, "-");
+	m_nEndMonth = atoi(tok);
+	tok = strtok(NULL, "-");
+	m_nEndDay = atoi(tok);
+
+	int nChange = 0;
+	// 종료일자의 날짜가 더 클 경우 서로 바꿔줌
+	if(m_nStartYear > m_nEndYear)
+	{
+		nChange++;
+	}else if(m_nStartYear == m_nEndYear)
+	{
+		if(m_nStartMonth > m_nEndMonth)
+		{
+			nChange++;	
+		}else if(m_nStartMonth == m_nEndMonth)
+		{
+			if(m_nStartDay > m_nEndDay)
+			{
+				nChange++;
+			}
+		}
+
+	}
+
+
+	if(nChange)
+	{
+		int tmp = m_nStartYear;
+		m_nStartYear = m_nEndYear;
+		m_nEndYear = tmp;
+
+		tmp = m_nStartMonth;
+		m_nStartMonth = m_nEndMonth;
+		m_nEndMonth = tmp;
+
+		tmp = m_nStartDay;
+		m_nStartDay = m_nEndDay;
+		m_nEndDay = tmp;
+	}
+
+	int nInTotal = 0, nOutTotal = 0, nResult = 0;
+
+	m_listIncome.DeleteAllItems();	
+	// 수입부분의 리스트 개수를 카운트하고,
+	for(int i = 0 ; i < pMainDlg->m_listIncomeControl.GetItemCount() ; i++)
+	{
+		// 첫 번째 날짜 부분 칼럼을 읽어온다.
+		CString sDate = pMainDlg->m_listIncomeControl.GetItemText(i, 0);
+/*		
+		cur = 0;
+		str = sDate.Tokenize("-", cur);
+		int nYear = atoi(str.GetBuffer(0));
+		str = sDate.Tokenize("-", cur);
+		int nMonth = atoi(str.GetBuffer(0));
+		str = sDate.Tokenize("-", cur);
+		int nDay = atoi(str.GetBuffer(0));
+*/
+		strcpy(str, sDate.GetBuffer(sDate.GetLength()));
+
+		tok = strtok(str, "-");
+		int nYear = atoi(tok);
+		tok = strtok(NULL, "-");
+		int nMonth = atoi(tok);
+		tok = strtok(NULL, "-");
+		int nDay = atoi(tok);
+
+		//유효 날짜인지 검사
+		nChange = 0;
+		if(m_nStartYear < nYear)
+		{
+			nChange++;			
+		}else if(m_nStartYear == nYear)
+		{
+			if(m_nStartMonth < nMonth)
+			{
+				nChange++;
+			}else if(m_nStartMonth == nMonth)
+			{
+				if(m_nStartDay <= nDay)			
+				{
+					nChange++;
+				}else nChange = 0;
+			}
+		}
+			
+		if(nChange)
+		{
+			if(m_nEndYear > nYear)
+			{
+				nChange++;			
+			}else if(m_nEndYear == nYear)
+			{
+				if(m_nEndMonth > nMonth)
+				{
+					nChange++;
+				}else if(m_nEndMonth == nMonth)
+				{
+					if(m_nEndDay >= nDay)			
 					{
-						CDialog::DoDataExchange(pDX);
-							//{{AFX_DATA_MAP(CStatistics)
-								DDX_Control(pDX, IDC_EXPENSE_STATISTICS, m_listExpense);
-									DDX_Control(pDX, IDC_INCOME_STATISTICS, m_listIncome);
-										DDX_Text(pDX, IDC_SEARCH_START_POINT, m_edStartPoint);
-											DDX_Text(pDX, IDC_SEARCH_END_POINT, m_edEndPoint);
-												//}}AFX_DATA_MAP
-												}
+						nChange++;
+					}else nChange = 0;
+				}
+			}
+		}
+		//유효날짜 검사 끝
 
+		if(nChange)
+		{
+			int nCount = m_listIncome.GetItemCount();
+			LV_ITEM lvItem;
+			CString str;
 
-												BEGIN_MESSAGE_MAP(CStatistics, CDialog)
-													//{{AFX_MSG_MAP(CStatistics)
-														ON_BN_CLICKED(IDC_BUTTON_SEARCH, OnButtonSearch)
-															//}}AFX_MSG_MAP
-															END_MESSAGE_MAP()
+			// 분류 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 0;
+			str = pMainDlg->m_listIncomeControl.GetItemText(i, 1);
+			lvItem.pszText = (LPSTR)(LPCSTR)str;
+			m_listIncome.InsertItem(&lvItem);
 
-															/////////////////////////////////////////////////////////////////////////////
-															// CStatistics message handlers
+			// 금액 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 1;
+			str = pMainDlg->m_listIncomeControl.GetItemText(i, 3);
+			lvItem.pszText = (LPSTR)(LPCSTR)str;
+			m_listIncome.SetItem(&lvItem);
+			nInTotal += atoi(lvItem.pszText);
+			
+			str.Format("%.0lf", (double)atoi(lvItem.pszText) / (double)pMainDlg->GetDlgItemInt(IDC_TOTAL_INCOME) * 100.0);
+			// 점유률 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 2;
+			lvItem.pszText = (LPSTR)(LPCSTR)str;
+			m_listIncome.SetItem(&lvItem);
+			UpdateData(FALSE);
+		}
+		
+	}
 
-															BOOL CStatistics::OnInitDialog() 
-															{
-																CDialog::OnInitDialog();
-																	
-																		// TODO: Add extra initialization here
-																			LV_COLUMN lvColumn;
-																				char* list[3] = {"�з�", "�� �ݾ�", "������"};
-																					int nWidth[3] = {95, 80, 71};
+	m_listExpense.DeleteAllItems();
+	// 지출부분의 리스트 개수를 카운트하고,
+	for(int i = 0 ; i < pMainDlg->m_listExpenseControl.GetItemCount() ; i++)
+	{
+		// 첫 번째 날짜 부분 칼럼을 읽어온다.
+		CString sDate = pMainDlg->m_listExpenseControl.GetItemText(i, 0);
 
-																						// List Control�� Į���� �����Ѵ�.
-																							for(int i = 0 ; i < 4 ; i++)
-																								{
-																										lvColumn.mask = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
-																												lvColumn.fmt = LVCFMT_LEFT;
-																														lvColumn.pszText = list[i];
-																																lvColumn.iSubItem = i;
-																																		lvColumn.cx = nWidth[i];
-																																				m_listIncome.InsertColumn(i, &lvColumn);
-																																						m_listExpense.InsertColumn(i, &lvColumn);
-																																							}
+/*		cur = 0;
+		str = sDate.Tokenize("-", cur);
+		int nYear = atoi(str.GetBuffer(0));
+		str = sDate.Tokenize("-", cur);
+		int nMonth = atoi(str.GetBuffer(0));
+		str = sDate.Tokenize("-", cur);
+		int nDay = atoi(str.GetBuffer(0));*/
 
-																																								// List Control�� ��Ÿ�� ����(�׸��� ���� �߰�)
-																																									m_listIncome.SetExtendedStyle(m_listIncome.GetExtendedStyle() | LVS_EX_GRIDLINES);
-																																										m_listExpense.SetExtendedStyle(m_listExpense.GetExtendedStyle() | LVS_EX_GRIDLINES);
+		strcpy(str, sDate.GetBuffer(sDate.GetLength()));
 
-																																											return TRUE;  // return TRUE unless you set the focus to a control
-																																												              // EXCEPTION: OCX Property Pages should return FALSE
-																																													      }
+		tok = strtok(str, "-");
+		int nYear = atoi(tok);
+		tok = strtok(NULL, "-");
+		int nMonth = atoi(tok);
+		tok = strtok(NULL, "-");
+		int nDay = atoi(tok);
 
-																																													      void CStatistics::OnButtonSearch() 
-																																													      {
-																																													      	// TODO: Add your control notification handler code here
-																																															// ��� �׸��� �Էµ��� �ʾҰų�,
-																																																UpdateData();
-																																																	if(!m_edStartPoint.IsEmpty() && !m_edEndPoint.IsEmpty())
-																																																		{
-																																																				// �Է������� ���� ������� else���� ���������� ���
-																																																						if(m_edStartPoint.GetLength() == 10 && m_edEndPoint.GetLength() == 10)
-																																																								{
-																																																											IncomeSearch();
-																																																													}
-																																																														}
-																																																															else
-																																																																	MessageBox("������ �߸��Ǿ��ų� ��� �׸��� �Էµ��� �ʾҽ��ϴ�.\n�Է� ��) 2005-01-01 Ȥ�� 2005-10-24", "���!", MB_OK);
-																																																																		
-																																																																		}
+		//유효 날짜인지 검사
+		nChange = 0;
+		if(m_nStartYear < nYear)
+		{
+			nChange++;			
+		}else if(m_nStartYear == nYear)
+		{
+			if(m_nStartMonth < nMonth)
+			{
+				nChange++;
+			}else if(m_nStartMonth == nMonth)
+			{
+				if(m_nStartDay <= nDay)			
+				{
+					nChange++;
+				}else nChange = 0;
+			}
+		}
+
+		if(nChange)
+		{
+			if(m_nEndYear > nYear)
+			{
+				nChange++;			
+			}else if(m_nEndYear == nYear)
+			{
+				if(m_nEndMonth > nMonth)
+				{
+					nChange++;
+				}else if(m_nEndMonth == nMonth)
+				{
+					if(m_nEndDay >= nDay)			
+					{
+						nChange++;
+					}else nChange = 0;
+				}
+			}
+		}
+		//유효날짜 검사 끝
+
+		if(nChange)
+		{
+			int nCount = m_listExpense.GetItemCount();
+			LV_ITEM lvItem;
+			CString str;
+
+			// 분류 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 0;
+			str = pMainDlg->m_listExpenseControl.GetItemText(i, 1);
+			lvItem.pszText = (LPSTR)(LPCSTR)str;
+			m_listExpense.InsertItem(&lvItem);
+
+			// 금액 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 1;
+			str = pMainDlg->m_listExpenseControl.GetItemText(i, 3);
+			lvItem.pszText = (LPSTR)(LPCSTR)str;
+			m_listExpense.SetItem(&lvItem);
+			nOutTotal += atoi(lvItem.pszText);
+
+			str.Format("%.0lf", (double)atoi(lvItem.pszText) / (double)pMainDlg->GetDlgItemInt(IDC_TOTAL_EXPENSE) * 100.0);
+			// 점유률 부분의 입력사항을 ListControl에 추가
+			lvItem.mask = LVIF_TEXT;
+			lvItem.iItem = nCount;
+			lvItem.iSubItem = 2;
+			lvItem.pszText = (LPSTR)(LPCSTR)str;
+			m_listExpense.SetItem(&lvItem);
+			UpdateData(FALSE);
+		}
+
+	}
+
+	nResult = nInTotal - nOutTotal;
+	
+	SetDlgItemInt(IDC_SEARCH_INCOME, nInTotal);
+	SetDlgItemInt(IDC_SEARCH_EXPENSE, nOutTotal);
+	SetDlgItemInt(IDC_SEARCH_REMAIN, nResult);
+
+}
+
+BOOL CStatistics::PreTranslateMessage(MSG *pMsg)
+{
+	// enter키를 눌러도 창이 종료되지 않도록 지정
+	if(pMsg->message == WM_KEYDOWN)	{ if(pMsg->wParam == VK_RETURN) return TRUE; }       
+
+	return CDialog::PreTranslateMessage(pMsg);
+}
